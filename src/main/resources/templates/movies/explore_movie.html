@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <!-- 합쳐지고 최소화된 최신 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <!-- 부가적인 테마 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+
+    <script th:src="@{/js/jquery.star-rating-svg.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/star-rating-svg.css}">
+
+    <!--<script src="js/jquery.star-rating-svg.js"></script>
+    <link rel="stylesheet" href="/css/star-rating-svg.css">-->
+    <title>Title</title>
+    <script>
+        let sequence = 0;
+        let score;
+        let html = '';
+        let click_genre_id;
+
+        function testajax() {
+            let sendData = {"sequence": sequence, "genre_id": click_genre_id}
+            $.ajax({
+                url: '/movies/explore',
+                method: 'POST',
+                data: sendData,
+                success: function (resp) {
+                    sequence += 20;
+                    $.each(resp, function (index, item) {
+                        html += '<div style="display:inline-block; height: auto; width: 18%; border: 1px solid red; text-align: center; overflow: hidden;">';
+                        html += '<a href="/movies/view/' + item["id"] + '">';
+                        html += '<img src="' + item["img_link"] + '" style="height: auto; width: 100%" ="' + item["id"] + '" class="movie_img">';
+                        html += '</a>';
+                        html += '<p>' + item["title"] + '</p>';
+                        html += '<div class="star1" id ="' + item["id"] + '"></div></div>';
+                    })
+                    document.getElementById('123').innerHTML = html;
+                    starClick();
+                }
+            })
+        }
+
+        function starClick() {
+            $('.star1').starRating({
+                totalStars: 5,
+                emptyColor: 'lightgray',
+                hoverColor: 'salmon',
+                activeColor: 'cornflowerblue',
+                initialRating: 0,
+                strokeWidth: 0,
+                useGradient: false,
+                callback: function (currentRating) {
+                    score = currentRating;
+                }
+            });
+        }
+
+        $(function () {
+            let html1 = '';
+            $.ajax({
+                url: '/movies/explore_movie',
+                method: 'POST',
+                success: function (resp) {
+                    html1 += '<div class="dropdown">' +
+                        '<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">\n' +
+                        '장르' + '<span class="caret"></span>' + '</button>' + '<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">'
+                    $.each(resp, function (index, item) {
+                        html1 += '<li class="aaa" id="' + item["id"] + '"role="presentation"><a role="menuitem" tabindex="-1">' + item["genre"] + '</a></li>'
+                    })
+                    html1 += '</ul></div>'
+                    document.getElementById ('111').innerHTML = html1;
+                }
+
+            })
+            starClick();
+            $(document).on("click", ".star1", function () {
+                let click_movie_id = $(this).attr('id');
+                let sendData = {"movie_id": click_movie_id, "input": score};
+                $.ajax({
+                    url: '/movies/is_ajaxx',
+                    method: 'GET',
+                    data: sendData
+                })
+                alert("감사합니다");
+            })
+
+            $(document).on("click", ".aaa", function () {
+                sequence = 0;
+                html = '';
+                click_genre_id = $(this).attr('id');
+                testajax();
+            })
+
+
+            $(document).scroll(function () {
+                var maxHeight = $(document).height();
+                var currentScroll = $(window).scrollTop() + $(window).height();
+
+                if (maxHeight <= currentScroll) {
+                    testajax();
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+<thead>
+<tr>
+    <th>#</th>
+    <th>영화</th>
+    <a href="/">홈으로</a><br>
+
+</tr>
+</br>
+</thead>
+<table id="111">
+</table>
+<table id="123">
+</table>
+<table id="124">
+</table>
+</body>
+</html>
