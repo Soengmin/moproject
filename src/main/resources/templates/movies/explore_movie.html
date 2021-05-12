@@ -19,6 +19,9 @@
     <!--<script src="js/jquery.star-rating-svg.js"></script>
     <link rel="stylesheet" href="/css/star-rating-svg.css">-->
     <title>Title</title>
+    <style>
+
+    </style>
     <script>
         let sequence = 0;
         let score;
@@ -34,12 +37,14 @@
                 success: function (resp) {
                     sequence += 20;
                     $.each(resp, function (index, item) {
-                        html += '<div style="display:inline-block; height: auto; width: 18%; border: 1px solid red; text-align: center; overflow: hidden;">';
+                        html += '<div class="col-xs-4 col-sm-3 col-md-3 col-lg-2" style="height: 500px">';
+                        html += '<div class="thumbnail">';
                         html += '<a href="/movies/view/' + item["id"] + '">';
-                        html += '<img src="' + item["img_link"] + '" style="height: auto; width: 100%" ="' + item["id"] + '" class="movie_img">';
-                        html += '</a>';
+                        html += '<img src="' + item["img_link"] + '" style="max-width: 100%; height: auto" class="movie_img">';
+                        // style="height: auto; max-width: 100%"
+                        html += '</a><div class="caption"';
                         html += '<p>' + item["title"] + '</p>';
-                        html += '<div class="star1" id ="' + item["id"] + '"></div></div>';
+                        html += '<div class="star1" id ="' + item["id"] + '"></div></div></div></div>';
                     })
                     document.getElementById('123').innerHTML = html;
                     starClick();
@@ -50,6 +55,7 @@
         function starClick() {
             $('.star1').starRating({
                 totalStars: 5,
+                starSize: 20,
                 emptyColor: 'lightgray',
                 hoverColor: 'salmon',
                 activeColor: 'cornflowerblue',
@@ -122,9 +128,7 @@
 </thead>
 <table id="111">
 </table>
-<table id="123">
-</table>
-<table id="124">
-</table>
+<div class="container-fluid" id="123">
+</div>
 </body>
 </html>
