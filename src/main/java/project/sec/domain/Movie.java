@@ -32,6 +32,8 @@ public class Movie {
     private String director;
     private String actor;
     private String img_link;
+    private int OpeningDate;
+    private String country;
 
     public Movie(String title, String link) {
         this.title = title;

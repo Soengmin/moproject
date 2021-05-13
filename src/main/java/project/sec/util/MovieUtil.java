@@ -16,9 +16,7 @@ import project.sec.util.NaverMovieSearch;
 
 import javax.persistence.EntityManager;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
@@ -39,12 +37,13 @@ public class MovieUtil {
         load_movie(true);
     }*/
 
+    @Transactional
     public void load_movie(boolean is_scheduled) {
         // true : 당일 날짜 영화 순위만 크롤링, false : 기간 설정
         String url = "https://movie.naver.com/movie/sdb/rank/rmovie.nhn?sel=cnt&tg=0&date=";
         String date = "";
         int year = 2016;
-        int month = 12;
+        int month = 5;
         int day = 31;
         int count = 0;
 
@@ -106,10 +105,13 @@ public class MovieUtil {
 
                     em.persist(movie);
 
-                    // ========= 장르 추가 ===========
+                    // ========= 장르, 최초 개봉일, 국가 추출해서 해시셋에 저장
                     e2 = curDoc.select("a[href]");
-                    HashSet<String> hashSet = new HashSet<>();
+                    HashSet<String> GenreHash = new HashSet<>();
+                    HashSet<String> CountryHash = new HashSet<>();
+                    HashSet<Integer> OpeningDateSet = new HashSet<>();
                     for (Element element1 : e2) {
+                        // 영화 장르 ====================
                         String tmp_href = element1.attr("href");
                         String href = "";
                         for (int i = 0; i < tmp_href.length(); i++) {
@@ -117,10 +119,41 @@ public class MovieUtil {
                                 href += tmp_href.charAt(i);
                             else break;
                         }
-                        if (href.equals("/movie/sdb/browsing/bmovie.nhn?genre=")) hashSet.add(element1.text());
+                        if (href.equals("/movie/sdb/browsing/bmovie.nhn?genre=")) GenreHash.add(element1.text());
+
+                        // 최초 개봉일
+                        if (tmp_href.length() > 8 &&
+                                tmp_href.substring(0, tmp_href.length() - 8).equals("/movie/sdb/browsing/bmovie.nhn?open=")) {
+                            OpeningDateSet.add(Integer.parseInt(tmp_href.substring(tmp_href.length() - 8)));
+                        }
+
+                        // 국가
+                        if (tmp_href.length() > 2 &&
+                        tmp_href.substring(0, tmp_href.length() - 2).equals("/movie/sdb/browsing/bmovie.nhn?nation=")) {
+                            CountryHash.add(element1.text());
+                        }
                     }
 
-                    for (String s : hashSet) {
+                    // 국가 저장 여러개면 쉼표로 구분해서 String으로 저장
+                    if (CountryHash.size() == 1) {
+                        movie.setCountry(CountryHash.iterator().next());
+                    }
+                    else if (CountryHash.size() > 1) {
+                        String tmp = "";
+                        for (String countryHash : CountryHash) {
+                            tmp += countryHash + ",";
+                        }
+                        tmp = tmp.substring(0, tmp.length() - 1);
+                        movie.setCountry(tmp);
+                    }
+
+                    // 개봉일 저장 =======
+                    List<Integer> tmp_list = new ArrayList<>(OpeningDateSet);
+                    Collections.sort(tmp_list);
+                    if (!tmp_list.isEmpty()) movie.setOpeningDate(tmp_list.get(0));
+
+                    // 장르 저장 ==================
+                    for (String s : GenreHash) {
                         Movie_Genre movie_genre = new Movie_Genre(movie);
                         List<Genre> find = em.createQuery("select g from Genre g where g.genre = :find", Genre.class)
                                 .setParameter("find", s)
@@ -141,7 +174,7 @@ public class MovieUtil {
                 }
             }
 
-            if (month <= 11 || is_scheduled) {
+            if (year <= 2015 || is_scheduled) {
                 System.out.println("저장된 영화 = " + count + "개");
                 break;
             }

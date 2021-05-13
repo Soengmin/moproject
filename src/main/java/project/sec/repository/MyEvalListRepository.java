@@ -19,7 +19,7 @@ public class MyEvalListRepository {
     public void save_eval(Member member, Movie movie, double rating) {
         System.out.println("====================");
         System.out.println(member.getId() + " " + movie.getId());
-        List<EvalList> resultList = em.createQuery("select e from EvalList e where e.member_id = :memid and e.movie_id = :movid", EvalList.class)
+        List<EvalList> resultList = em.createQuery("select e from EvalList e where e.memberId = :memid and e.movie_id = :movid", EvalList.class)
                 .setParameter("memid", member)
                 .setParameter("movid", movie)
                 .getResultList();
