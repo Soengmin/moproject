@@ -28,15 +28,14 @@ public class MovieUtil {
 
 
     /**
-     *     스케쥴러 - 영화 주기마다 업데이트 해주는데 사용
-     *     cron = 초 분 시 일 월 요일 연도
-     *     요일 : 0(일요일) ~ 6(토요일)
+     * 스케쥴러 - 영화 주기마다 업데이트 해주는데 사용
+     * cron = 초 분 시 일 월 요일 연도
+     * 요일 : 0(일요일) ~ 6(토요일)
      */
 /*    @Scheduled(cron = "0 * * * * *")
     public void update_movie() {
         load_movie(true);
     }*/
-
     @Transactional
     public void load_movie(boolean is_scheduled) {
         // true : 당일 날짜 영화 순위만 크롤링, false : 기간 설정
@@ -98,8 +97,10 @@ public class MovieUtil {
                     List<MovieForm> apiResult = nms.fromJsontoMovies(search);
                     for (MovieForm movieForm : apiResult) {
                         if (movie.getLink().equals(movieForm.getLink())) {
-                            movie.setActor(movieForm.getActor());
-                            movie.setDirector(movieForm.getDirector());
+                            movie.setActor(movieForm.getActor().replace("<b>", "")
+                                    .replace("</b>", ""));
+                            movie.setDirector(movieForm.getDirector().replace("<b>", "")
+                                    .replace("</b>", ""));
                         }
                     }
 
@@ -129,7 +130,7 @@ public class MovieUtil {
 
                         // 국가
                         if (tmp_href.length() > 2 &&
-                        tmp_href.substring(0, tmp_href.length() - 2).equals("/movie/sdb/browsing/bmovie.nhn?nation=")) {
+                                tmp_href.substring(0, tmp_href.length() - 2).equals("/movie/sdb/browsing/bmovie.nhn?nation=")) {
                             CountryHash.add(element1.text());
                         }
                     }
@@ -137,8 +138,7 @@ public class MovieUtil {
                     // 국가 저장 여러개면 쉼표로 구분해서 String으로 저장
                     if (CountryHash.size() == 1) {
                         movie.setCountry(CountryHash.iterator().next());
-                    }
-                    else if (CountryHash.size() > 1) {
+                    } else if (CountryHash.size() > 1) {
                         String tmp = "";
                         for (String countryHash : CountryHash) {
                             tmp += countryHash + ",";
@@ -161,8 +161,7 @@ public class MovieUtil {
                         if (find.size() == 1) {
                             movie_genre.setGenre_id(find.get(0));
                             // 현재 영화의 장르가 Genre 테이블에 이미 있으면 그냥 넣어줌
-                        }
-                        else if (find.size() == 0) {
+                        } else if (find.size() == 0) {
                             Genre genre = new Genre(s);
                             em.persist(genre);
                             movie_genre.setGenre_id(genre);
@@ -177,8 +176,7 @@ public class MovieUtil {
             if (year <= 2015 || is_scheduled) {
                 System.out.println("저장된 영화 = " + count + "개");
                 break;
-            }
-            else {
+            } else {
                 if (day == 1) {
                     if (month == 1) {
                         --year;
