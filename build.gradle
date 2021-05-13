@@ -16,6 +16,7 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -38,6 +39,7 @@ dependencies {
 
     //jsoup ( 크롤링)
     implementation 'org.jsoup:jsoup:1.13.1'
+    implementation 'com.github.shin285:KOMORAN:3.3.4'
 
 }
 
