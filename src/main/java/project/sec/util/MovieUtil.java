@@ -20,7 +20,6 @@ import java.util.*;
 
 @Component
 @RequiredArgsConstructor
-@Transactional
 public class MovieUtil {
 
     private final EntityManager em;
