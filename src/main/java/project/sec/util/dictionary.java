@@ -41,12 +41,25 @@ public class dictionary {
         for (Movie m : movie) {
             String[] tmp = {};
             try {
-                 tmp = m.getActor().split("\\|");
+                tmp = m.getActor().split("\\|");
             } catch (NullPointerException e) {
-
             }
             for (String s : tmp) {
                 set.add(s);
+            }
+
+            try {
+                for (String s : m.getCountry().split(",")) {
+                    set.add(s);
+                }
+            } catch (NullPointerException e) {
+            }
+
+            try {
+                for (String s : m.getDirector().split("\\|")) {
+                    set.add(s);
+                }
+            } catch (NullPointerException e) {
             }
 
             Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
@@ -66,5 +79,53 @@ public class dictionary {
         for (int i = 0; i < set.size(); i++) {
             dictionaryMap.put(i, iterator.next());
         }
+    }
+
+    /**
+     * 인자로 movie 넘기면 그 movie의 벡터 해쉬맵 리턴
+     */
+    public static HashMap<String, Integer> return_movie_dic(Movie movie) {
+        HashMap<String, Integer> ret_map = new HashMap<>();
+
+        for (String value : dictionaryMap.values()) {
+            ret_map.put(value, 0);
+        }
+
+        String[] tmp = {};
+        try {
+            tmp = movie.getActor().split("\\|");
+        } catch (NullPointerException e) {
+        }
+        for (String s : tmp) {
+            ret_map.put(s, ret_map.get(s) + 1);
+        }
+
+        try {
+            for (String s : movie.getCountry().split(",")) {
+                ret_map.put(s, ret_map.get(s) + 1);
+            }
+        } catch (NullPointerException e) {
+        }
+
+        try {
+            for (String s : movie.getDirector().split("\\|")) {
+                ret_map.put(s, ret_map.get(s) + 1);
+            }
+        } catch (NullPointerException e) {
+        }
+
+        Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
+        if (movie.getOutline().length() >= 1) {
+            KomoranResult list = komoran.analyze(movie.getOutline());
+            List<Token> tokenList = list.getTokenList();
+            for (Token token : tokenList) {
+                if (token.getPos().equals("NNP")) {
+                    System.out.println(token.getMorph());
+                    ret_map.put(token.getMorph(), ret_map.get(token.getMorph()) + 1);
+                }
+            }
+        }
+
+        return ret_map;
     }
 }

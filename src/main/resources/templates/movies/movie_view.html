@@ -18,15 +18,24 @@
 <div class="page-header">
     <h1 th:text="${findMovie.getTitle()}">Example page header <small th:text="">Subtext for header</small></h1>
 </div>
-<div style="display: inline-block;">
-    <img th:src="${findMovie.getImg_link()}">
-</div>
-<div style="display: inline-block;">
-    배우 : <span th:text="${findMovie.getActor()}"></span><br>
-    줄거리<br><p th:text="${findMovie.getOutline()}"></p>
-    장르 : <td th:each="genre : ${findMovie.getGenreList()}">
-    <span th:text="${genre.genre.genre}"></span>
-    </td>
+<div class="container-fluid">
+    <div class="col-md-2">
+        <img th:src="${findMovie.getImg_link()}">
+    </div>
+    <div class="col-md-10">
+        감독 : <span th:text="${findMovie.getDirector()}" ></span><br>
+        배우 : <span th:text="${findMovie.getActor()}"></span><br>
+        줄거리<br><p th:text="${findMovie.getOutline()}"></p>
+        장르 : <td th:each="genre : ${findMovie.getGenreList()}">
+        <span th:text="${genre.genre.genre}"></span>
+        </td>
+    </div>
+    <div class="col-md-12">
+        단어 빈도 확인
+        <td th:each="ppap : ${dic}">
+            <span th:text="${ppap.key}"></span> : <span th:text="${ppap.value}"></span> /
+        </td>
+    </div>
 </div>
 </body>
 </html>
