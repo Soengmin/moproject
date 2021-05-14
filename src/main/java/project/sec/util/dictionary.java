@@ -5,10 +5,14 @@ import kr.co.shineware.nlp.komoran.core.Komoran;
 import kr.co.shineware.nlp.komoran.model.KomoranResult;
 import kr.co.shineware.nlp.komoran.model.Token;
 import lombok.RequiredArgsConstructor;
+import org.openkoreantext.processor.KoreanTokenJava;
+import org.openkoreantext.processor.OpenKoreanTextProcessorJava;
+import org.openkoreantext.processor.tokenizer.KoreanTokenizer;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import project.sec.domain.Genre;
 import project.sec.domain.Movie;
+import scala.collection.Seq;
 
 import javax.persistence.EntityManager;
 import java.util.*;
@@ -62,7 +66,7 @@ public class dictionary {
             } catch (NullPointerException e) {
             }
 
-            Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
+/*            Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
             if (m.getOutline().length() >= 1) {
                 KomoranResult list = komoran.analyze(m.getOutline());
                 List<Token> tokenList = list.getTokenList();
@@ -70,6 +74,19 @@ public class dictionary {
                     if (token.getPos().equals("NNP")) {
                         System.out.println(token.getMorph());
                         set.add(token.getMorph());
+                    }
+                }
+            }*/
+
+            if (m.getOutline().length() >= 1) {
+                CharSequence normalized = OpenKoreanTextProcessorJava.normalize(m.getOutline());
+                Seq<KoreanTokenizer.KoreanToken> tokens = OpenKoreanTextProcessorJava.tokenize(normalized);
+                List<KoreanTokenJava> strings = OpenKoreanTextProcessorJava.tokensToJavaKoreanTokenList(tokens);
+                for (KoreanTokenJava s : strings) {
+                    if (s.getPos().toString().equals("Noun") ||
+                    s.getPos().toString().equals("Alpha")) {
+                        System.out.println(s.getText());
+                        set.add(s.getText());
                     }
                 }
             }
@@ -114,7 +131,7 @@ public class dictionary {
         } catch (NullPointerException e) {
         }
 
-        Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
+/*        Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
         if (movie.getOutline().length() >= 1) {
             KomoranResult list = komoran.analyze(movie.getOutline());
             List<Token> tokenList = list.getTokenList();
@@ -122,6 +139,19 @@ public class dictionary {
                 if (token.getPos().equals("NNP")) {
                     System.out.println(token.getMorph());
                     ret_map.put(token.getMorph(), ret_map.get(token.getMorph()) + 1);
+                }
+            }
+        }*/
+
+        if (movie.getOutline().length() >= 1) {
+            CharSequence normalized = OpenKoreanTextProcessorJava.normalize(movie.getOutline());
+            Seq<KoreanTokenizer.KoreanToken> tokens = OpenKoreanTextProcessorJava.tokenize(normalized);
+            List<KoreanTokenJava> strings = OpenKoreanTextProcessorJava.tokensToJavaKoreanTokenList(tokens);
+            for (KoreanTokenJava s : strings) {
+                if (s.getPos().toString().equals("Noun") ||
+                        s.getPos().toString().equals("Alpha")) {
+                    System.out.println(s.getText());
+                    ret_map.put(s.getText(), ret_map.get(s.getText()) + 1);
                 }
             }
         }
