@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import project.sec.domain.Genre;
 import project.sec.domain.Movie;
+import project.sec.domain.Movie_Genre;
 import scala.collection.Seq;
 
 import javax.persistence.EntityManager;
@@ -129,6 +130,11 @@ public class dictionary {
                 ret_map.put(s, ret_map.get(s) + 1);
             }
         } catch (NullPointerException e) {
+        }
+
+        List<Movie_Genre> genreList = movie.getGenreList();
+        for (Movie_Genre movie_genre : genreList) {
+            ret_map.put(movie_genre.getGenre().getGenre(), ret_map.get(movie_genre.getGenre().getGenre()) + 1);
         }
 
 /*        Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
