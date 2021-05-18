@@ -1,5 +1,6 @@
 package project.sec.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,20 +10,16 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import project.sec.controller.MemberForm;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Member implements UserDetails {
 
-    @GeneratedValue @Id
+    @GeneratedValue
+    @Id
     @Column(name = "member_id")
     private Long id;
 
@@ -37,6 +34,10 @@ public class Member implements UserDetails {
 
     @Column(name = "auth")
     private String auth;
+
+    @OneToMany(mappedBy = "memberId")
+    @JsonManagedReference
+    List<EvalList> evalLists = new ArrayList<>();
 
     @Builder
     public Member(String email, String password, String nicName, String auth) {

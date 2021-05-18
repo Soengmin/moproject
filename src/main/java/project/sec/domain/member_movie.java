@@ -9,7 +9,8 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class member_movie {
+public class
+member_movie {
 
     @GeneratedValue @Id
     private Long id;

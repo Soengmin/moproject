@@ -10,9 +10,7 @@ import org.openkoreantext.processor.OpenKoreanTextProcessorJava;
 import org.openkoreantext.processor.tokenizer.KoreanTokenizer;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import project.sec.domain.Genre;
-import project.sec.domain.Movie;
-import project.sec.domain.Movie_Genre;
+import project.sec.domain.*;
 import scala.collection.Seq;
 
 import javax.persistence.EntityManager;
@@ -86,7 +84,6 @@ public class dictionary {
                 for (KoreanTokenJava s : strings) {
                     if (s.getPos().toString().equals("Noun") ||
                     s.getPos().toString().equals("Alpha")) {
-                        System.out.println(s.getText());
                         set.add(s.getText());
                     }
                 }
@@ -112,10 +109,10 @@ public class dictionary {
         String[] tmp = {};
         try {
             tmp = movie.getActor().split("\\|");
+            for (String s : tmp) {
+                ret_map.put(s, ret_map.get(s) + 1);
+            }
         } catch (NullPointerException e) {
-        }
-        for (String s : tmp) {
-            ret_map.put(s, ret_map.get(s) + 1);
         }
 
         try {
@@ -156,11 +153,32 @@ public class dictionary {
             for (KoreanTokenJava s : strings) {
                 if (s.getPos().toString().equals("Noun") ||
                         s.getPos().toString().equals("Alpha")) {
-                    System.out.println(s.getText());
                     ret_map.put(s.getText(), ret_map.get(s.getText()) + 1);
                 }
             }
         }
+        return ret_map;
+    }
+
+    public static HashMap<String, Integer> get_member_vector(Member member) {
+        long beforeTime = System.currentTimeMillis();
+        HashMap<String, Integer> ret_map = new HashMap<>();
+        for (String value : dictionaryMap.values()) {
+            ret_map.put(value, 0);
+        }
+
+        for (EvalList member_movie : member.getEvalLists()) {
+            Movie mov = member_movie.getMovie_id();
+            HashMap<String, Integer> movieDic = return_movie_dic(mov);
+            for (String s : movieDic.keySet()) {
+                if (movieDic.get(s) >= 1) {
+                    ret_map.put(s, ret_map.get(s) + movieDic.get(s));
+                }
+            }
+        }
+
+        long afterTime = System.currentTimeMillis();
+        System.out.println(afterTime - beforeTime);
 
         return ret_map;
     }
