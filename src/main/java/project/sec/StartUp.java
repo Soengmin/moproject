@@ -18,7 +18,7 @@ public class StartUp implements ApplicationListener<ContextRefreshedEvent> {
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        movieUtil.load_movie(false);
+//        movieUtil.load_movie(false);
         long before = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         dictionary.make_dic();
         System.gc();
