@@ -18,7 +18,7 @@ public class StartUp implements ApplicationListener<ContextRefreshedEvent> {
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-//        movieUtil.load_movie(false);
-        dictionary.make_dic();
+        movieUtil.load_movie(true);
+//        dictionary.make_dic();
     }
 }

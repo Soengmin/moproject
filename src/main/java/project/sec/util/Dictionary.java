@@ -134,18 +134,6 @@ public class Dictionary {
             ret_map.put(movie_genre.getGenre().getGenre(), ret_map.get(movie_genre.getGenre().getGenre()) + 1);
         }
 
-/*        Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
-        if (movie.getOutline().length() >= 1) {
-            KomoranResult list = komoran.analyze(movie.getOutline());
-            List<Token> tokenList = list.getTokenList();
-            for (Token token : tokenList) {
-                if (token.getPos().equals("NNP")) {
-                    System.out.println(token.getMorph());
-                    ret_map.put(token.getMorph(), ret_map.get(token.getMorph()) + 1);
-                }
-            }
-        }*/
-
         if (movie.getOutline().length() >= 1) {
             CharSequence normalized = OpenKoreanTextProcessorJava.normalize(movie.getOutline());
             Seq<KoreanTokenizer.KoreanToken> tokens = OpenKoreanTextProcessorJava.tokenize(normalized);

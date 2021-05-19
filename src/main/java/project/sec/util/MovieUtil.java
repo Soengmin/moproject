@@ -12,6 +12,7 @@ import project.sec.controller.MovieForm;
 import project.sec.domain.Genre;
 import project.sec.domain.Movie;
 import project.sec.domain.Movie_Genre;
+import project.sec.service.DictionaryService;
 import project.sec.util.NaverMovieSearch;
 
 import javax.persistence.EntityManager;
@@ -24,6 +25,7 @@ public class MovieUtil {
 
     private final EntityManager em;
     private final NaverMovieSearch nms;
+    private final DictionaryService dictionaryService;
 
 
     /**
@@ -166,8 +168,10 @@ public class MovieUtil {
                             movie_genre.setGenre_id(genre);
                         }
                         em.persist(movie_genre);
+                        movie.getGenreList().add(movie_genre);
                     }
 
+                    dictionaryService.make_dictionary(movie);
                     System.out.println(element.text() + " " + date);
                 }
             }
