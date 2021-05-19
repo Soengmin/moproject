@@ -21,4 +21,13 @@ public class member_dictionary {
     private Dictionary dictionary;
 
     int count;
+
+    public member_dictionary(Member member, Dictionary dictionary) {
+        this.member = member;
+        this.dictionary = dictionary;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 }

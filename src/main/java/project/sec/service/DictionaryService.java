@@ -8,12 +8,11 @@ import org.openkoreantext.processor.OpenKoreanTextProcessorJava;
 import org.openkoreantext.processor.tokenizer.KoreanTokenizer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.sec.domain.Dictionary;
-import project.sec.domain.Movie;
-import project.sec.domain.Movie_Genre;
+import project.sec.domain.*;
 import project.sec.repository.DictionaryRepository;
 import scala.collection.Seq;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DictionaryService {
     private final DictionaryRepository dictionaryRepository;
+    private final EntityManager em;
 
     public void save(Dictionary dictionary) {
         String word = dictionary.getWord();
@@ -35,6 +35,10 @@ public class DictionaryService {
 
     public List<Dictionary> findByWord(String word) {
         return dictionaryRepository.findByWord(word);
+    }
+
+    public List<Dictionary> findAll() {
+        return dictionaryRepository.findAll();
     }
 
     @Transactional
@@ -85,6 +89,74 @@ public class DictionaryService {
         for (String s : dic_set) {
             Dictionary dictionary = new Dictionary(s);
             save(dictionary);
+        }
+    }
+
+    @Transactional
+    public void saveMovieMemberDic(Member member, Movie movie) {
+        List<Dictionary> dictionary = findAll();
+        HashMap<String, Integer> ret_map = new HashMap<>();
+
+        for (Dictionary d : dictionary) {
+            ret_map.put(d.getWord(), 0);
+        }
+        String[] tmp = {};
+        try {
+            tmp = movie.getActor().split("\\|");
+            for (String s : tmp) {
+                ret_map.put(s, ret_map.get(s) + 1);
+            }
+        } catch (NullPointerException e) {
+        }
+
+        try {
+            for (String s : movie.getCountry().split(",")) {
+                ret_map.put(s, ret_map.get(s) + 1);
+            }
+        } catch (NullPointerException e) {
+        }
+
+        try {
+            for (String s : movie.getDirector().split("\\|")) {
+                ret_map.put(s, ret_map.get(s) + 1);
+            }
+        } catch (NullPointerException e) {
+        }
+
+        List<Movie_Genre> genreList = movie.getGenreList();
+        for (Movie_Genre movie_genre : genreList) {
+            ret_map.put(movie_genre.getGenre().getGenre(), ret_map.get(movie_genre.getGenre().getGenre()) + 1);
+        }
+
+        if (movie.getOutline().length() >= 1) {
+            CharSequence normalized = OpenKoreanTextProcessorJava.normalize(movie.getOutline());
+            Seq<KoreanTokenizer.KoreanToken> tokens = OpenKoreanTextProcessorJava.tokenize(normalized);
+            List<KoreanTokenJava> strings = OpenKoreanTextProcessorJava.tokensToJavaKoreanTokenList(tokens);
+            for (KoreanTokenJava s : strings) {
+                if (s.getPos().toString().equals("Noun") ||
+                        s.getPos().toString().equals("Alpha")) {
+                    ret_map.put(s.getText(), ret_map.get(s.getText()) + 1);
+                }
+            }
+        }
+
+        for (String s : ret_map.keySet()) {
+            if (ret_map.get(s) >= 1) {
+                Dictionary dic = findByWord(s).get(0);
+                String Query = "select md from member_dictionary md where md.dictionary = :DIC and md.member = :MEM";
+                List<member_dictionary> memDic = em.createQuery(Query, member_dictionary.class)
+                        .setParameter("DIC", dic)
+                        .setParameter("MEM", member)
+                        .getResultList();
+
+                if (memDic.size() == 1) {
+                    memDic.get(0).setCount(memDic.get(0).getCount() + ret_map.get(s));
+                } else if (memDic.size() == 0) {
+                    member_dictionary md = new member_dictionary(member, dic);
+                    md.setCount(ret_map.get(s));
+                    em.persist(md);
+                }
+            }
         }
     }
 }

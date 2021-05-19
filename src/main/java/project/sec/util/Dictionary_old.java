@@ -18,7 +18,7 @@ import java.util.*;
 
 @Component
 @RequiredArgsConstructor
-public class Dictionary {
+public class Dictionary_old {
 
     private final EntityManager em;
 

@@ -5,8 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import project.sec.domain.Dictionary;
+import project.sec.domain.Member;
+import project.sec.domain.Movie;
+import project.sec.domain.member_dictionary;
 
 import javax.persistence.EntityManager;
+import javax.xml.bind.DatatypeConverterInterface;
 import java.util.List;
 
 @Repository
@@ -26,4 +30,16 @@ public class DictionaryRepository {
 
         return result;
     }
+
+    public List<Dictionary> findAll() {
+        return em.createQuery("select d from Dictionary d", Dictionary.class)
+                .getResultList();
+    }
+
+    public List<member_dictionary> findMemberVector(Member member) {
+        return em.createQuery("select md from member_dictionary md where md.member = :MEM")
+                .setParameter("MEM", member)
+                .getResultList();
+    }
+
 }

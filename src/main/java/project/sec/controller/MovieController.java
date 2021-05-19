@@ -9,10 +9,8 @@ import project.sec.domain.Genre;
 import project.sec.domain.Movie;
 import project.sec.service.*;
 import project.sec.util.NaverMovieSearch;
-import project.sec.util.Dictionary;
 
 import javax.persistence.EntityManager;
-import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -92,8 +90,6 @@ public class MovieController {
         Movie findMovie = movieService.findById(id);
         model.addAttribute("findMovie", findMovie);
 
-        HashMap<String, Integer> movie_dic = Dictionary.return_movie_dic(findMovie);
-        model.addAttribute("dic", movie_dic);
         return "movies/movie_view";
     }
 
