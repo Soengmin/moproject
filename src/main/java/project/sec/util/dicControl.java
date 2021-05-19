@@ -19,7 +19,7 @@ public class dicControl {
 
     @GetMapping(value = "/check_dic")
     public String check(Model model) {
-        Map<Integer, String> dictionaryMap = dictionary.getDictionaryMap();
+        Map<Integer, String> dictionaryMap = Dictionary.getDictionaryMap();
         dictionaryMap.put(0, "ㅎㅇ");
 
         model.addAttribute("dic", dictionaryMap);
@@ -30,7 +30,7 @@ public class dicControl {
     public String mydic(Model model, Authentication auth) {
         String email = auth.getName();
         List<Member> byEmail = memberRepository.findByEmail(email);
-        HashMap<String, Integer> member_vector = dictionary.get_member_vector(byEmail.get(0));
+        HashMap<String, Integer> member_vector = Dictionary.get_member_vector(byEmail.get(0));
         model.addAttribute("mem_dic", member_vector);
 
         return "/myDic";
