@@ -92,7 +92,10 @@
                 $.ajax({
                     url: '/movies/is_ajaxx',
                     method: 'GET',
-                    data: sendData
+                    data: sendData,
+                    success: function (resp) {
+
+                    }
                 })
                 alert("감사합니다");
             })

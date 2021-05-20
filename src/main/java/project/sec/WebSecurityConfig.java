@@ -41,6 +41,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .ignoringAntMatchers("/movies/explore")
                 .ignoringAntMatchers("/movies/search")
                 .ignoringAntMatchers("/movies/myeval_movie")
+                .ignoringAntMatchers("/movies/loadComment")
+                .ignoringAntMatchers("/movies/deleteComment")
                 .and()
                 .formLogin()
                 .loginPage("/members/login")
