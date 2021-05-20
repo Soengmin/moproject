@@ -1,7 +1,6 @@
 package project.sec.service;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.openkoreantext.processor.KoreanTokenJava;
 import org.openkoreantext.processor.OpenKoreanTextProcessorJava;
@@ -13,7 +12,6 @@ import project.sec.repository.DictionaryRepository;
 import scala.collection.Seq;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -143,8 +141,8 @@ public class DictionaryService {
         for (String s : ret_map.keySet()) {
             if (ret_map.get(s) >= 1) {
                 Dictionary dic = findByWord(s).get(0);
-                String Query = "select md from member_dictionary md where md.dictionary = :DIC and md.member = :MEM";
-                List<member_dictionary> memDic = em.createQuery(Query, member_dictionary.class)
+                String Query = "select md from Member_dictionary md where md.dictionary = :DIC and md.member = :MEM";
+                List<Member_dictionary> memDic = em.createQuery(Query, Member_dictionary.class)
                         .setParameter("DIC", dic)
                         .setParameter("MEM", member)
                         .getResultList();
@@ -152,7 +150,7 @@ public class DictionaryService {
                 if (memDic.size() == 1) {
                     memDic.get(0).setCount(memDic.get(0).getCount() + ret_map.get(s));
                 } else if (memDic.size() == 0) {
-                    member_dictionary md = new member_dictionary(member, dic);
+                    Member_dictionary md = new Member_dictionary(member, dic);
                     md.setCount(ret_map.get(s));
                     em.persist(md);
                 }

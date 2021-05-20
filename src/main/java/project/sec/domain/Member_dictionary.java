@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @Getter
-public class member_dictionary {
+public class Member_dictionary {
     @Id @GeneratedValue
     private Long id;
 
@@ -20,9 +20,10 @@ public class member_dictionary {
     @JoinColumn(name = "dictionary_id")
     private Dictionary dictionary;
 
+
     int count;
 
-    public member_dictionary(Member member, Dictionary dictionary) {
+    public Member_dictionary(Member member, Dictionary dictionary) {
         this.member = member;
         this.dictionary = dictionary;
     }

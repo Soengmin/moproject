@@ -7,10 +7,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import project.sec.domain.Dictionary;
 import project.sec.domain.Member;
-import project.sec.domain.member_dictionary;
+import project.sec.domain.Member_dictionary;
 import project.sec.repository.DictionaryRepository;
 import project.sec.repository.MemberRepository;
 import project.sec.service.DictionaryService;
+import project.sec.service.VectorService;
 
 import javax.persistence.EntityManager;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ public class dicControl {
     private final EntityManager em;
     private final DictionaryService dictionaryService;
     private final DictionaryRepository dictionaryRepository;
+    private final VectorService vectorService;
 
     @GetMapping(value = "/check_dic")
     public String check(Model model) {
@@ -42,16 +44,17 @@ public class dicControl {
         Long a = System.currentTimeMillis();
         String email = auth.getName();
         Member member = memberRepository.findByEmail(email).get(0);
-        List<member_dictionary> memberVector = dictionaryRepository.findMemberVector(member);
+        List<Member_dictionary> memberVector = dictionaryRepository.findMemberVector(member);
         HashMap<String, Integer> vec = new HashMap<>();
 
-        for (member_dictionary md : memberVector) {
+        for (Member_dictionary md : memberVector) {
             vec.put(md.getDictionary().getWord(), md.getCount());
         }
         model.addAttribute("mem_dic", vec);
 
         Long b = System.currentTimeMillis();
         System.out.println(b - a);
+        vectorService.cosSim(email);
 
         return "/myDic";
     }

@@ -35,7 +35,7 @@ public class VectorService {
         for(Member_dictionary memdic : userVector){
             String word = memdic.getDictionary().getWord();
             int index = dicArr.indexOf(word);
-            vector.set(index,memdic.getCount());
+            vector.set(index, memdic.getCount());
         }
         return vector;
     }
