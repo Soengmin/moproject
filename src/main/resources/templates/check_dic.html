@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" >
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>사전확인</title>
+</head>
+<body>
+<td th:each="ppap : ${dic}">
+    <span th:text="${ppap.key}"></span> <span th:text="${ppap.value}"></span></span><br>
+</td>
+</body>
+</html>

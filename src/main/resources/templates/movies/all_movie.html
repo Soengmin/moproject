@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script th:src="@{/js/jquery.star-rating-svg.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/star-rating-svg.css}">
+    <title>Title</title>
+    <script>
+        var sequence = 0;
+        let score;
+        var html = '';
+        function testajax() {
+            var sendData = {"sequence":sequence}
+            $.ajax({
+                url:'/movies/is_ajax',
+                method :'POST',
+                data: sendData,
+                success : function (resp) {
+                    sequence += 20;
+                    $.each(resp, function (index, item) {
+                        html += '<div style="display:inline-block; height: auto; width: 18%; border: 1px solid red; text-align: center; overflow: hidden;">';
+                        html += '<img src="' + item["img_link"] + '" style="height: auto; width: 100%" id="' + item["id"] + '" class="movie_img">';
+                        html += '<p>' + item["title"] + '</p>';
+                        html += '<div class="star1" id ="' + item["id"] + '"></div></div>';
+                    })
+                    document.getElementById('123').innerHTML = html;
+                    starClick();
+                }
+            })
+        }
+
+        function starClick()  {
+            $('.star1').starRating({
+                totalStars: 5,
+                emptyColor: 'lightgray',
+                hoverColor: 'salmon',
+                activeColor: 'cornflowerblue',
+                initialRating: 0,
+                strokeWidth: 0,
+                useGradient: false,
+                callback: function(currentRating){
+                    score = currentRating;
+                }
+            });
+        }
+
+        $(function () {
+            testajax();
+            starClick();
+            $(document).on("click", ".star1", function () {
+                let click_movie_id = $(this).attr('id');
+                let sendData = {"movie_id":click_movie_id,"input":score};
+                $.ajax({
+                    url:'/movies/is_ajaxx',
+                    method :'GET',
+                    data:sendData
+                })
+                alert("감사합니다");
+            })
+
+
+            $(document).scroll(function () {
+                var maxHeight = $(document).height();
+                var currentScroll = $(window).scrollTop() + $(window).height();
+
+                if (maxHeight <= currentScroll) {
+                    testajax();
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+<thead>
+<tr>
+    <th>#</th>
+    <th>영화</th>
+    <a href="/">홈으로</a>
+</tr>
+</br>
+</thead>
+<tbody>
+
+<!--<td th:each="movie : ${movieList}">-->
+<!--    <div style="display:inline-block; height: auto; width: 18%; border: 1px solid red; text-align: center;-->
+<!--overflow: hidden;">-->
+<!--        <img th:src="${movie.img_link}" style="height: auto; width: 100%" th:id="${movie.id}"-->
+<!--        class="movie_img">-->
+<!--        <p th:text="${movie.title}"><p>-->
+<!--    </div>-->
+<!--</td>-->
+<!--<input type="button" onclick="testajax()" value="인생씨발...">-->
+<table id = "123">
+</table>
+</tbody>
+</body>
+</html>

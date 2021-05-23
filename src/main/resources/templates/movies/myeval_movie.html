@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script th:src="@{/js/jquery.star-rating-svg.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/star-rating-svg.css}">
+    <title>Title</title>
+    <script>
+        function starClick()  {
+            $('.star1').starRating({
+                totalStars: 5,
+                emptyColor: 'lightgray',
+                hoverColor: 'salmon',
+                activeColor: 'cornflowerblue',
+                initialRating: 0,
+                strokeWidth: 0,
+                useGradient: false,
+                callback: function(currentRating){
+                    score = currentRating;
+                }
+            });
+        }
+
+        $(function () {
+            starClick();
+            $(document).on("click", ".star1", function () {
+                let click_movie_id = $(this).attr('id');
+                let sendData = {"movie_id":click_movie_id,"input":score};
+                $.ajax({
+                    url:'/movies/is_ajaxx',
+                    method :'GET',
+                    data:sendData
+                })
+                alert("감사합니다");
+            })
+            let html ='';
+
+            // merge를 위한 수정
+            // merge를 위한 수정 2
+            $.ajax({
+                url:'/movies/myeval_movie',
+                method :'POST',
+                success : function (resp) {
+                    $.each(resp, function (index, item) {
+                        html += '<div style="display:inline-block; height: auto; width: 18%; border: 1px solid red; text-align: center; overflow: hidden;">';
+                        html += '<img src="' + item["img_link"] + '" style="height: auto; width: 100%" id="' + item["id"] + '" class="movie_img">';
+                        html += '<p>' + item["title"] + '</p>';
+                        html += '<div class="star1" id ="' + item["id"] + '"></div></div>';
+                    })
+                    document.getElementById('123').innerHTML="";
+                    document.getElementById('123').innerHTML = html;
+                    starClick();
+                }
+            })
+
+
+            /*
+            $(document).on("click", ".findbutton", function () {
+                let html ='';
+                let find = $(".find").val();
+                alert(find)
+                let sendData = {"find":find};
+                $.ajax({
+                    url:'/movies/search',
+                    method :'POST',
+                    data: sendData,
+                    success : function (resp) {
+                        $.each(resp, function (index, item) {
+                            html += '<div style="display:inline-block; height: auto; width: 18%; border: 1px solid red; text-align: center; overflow: hidden;">';
+                            html += '<img src="' + item["img_link"] + '" style="height: auto; width: 100%" id="' + item["id"] + '" class="movie_img">';
+                            html += '<p>' + item["title"] + '</p>';
+                            html += '<div class="star1" id ="' + item["id"] + '"></div></div>';
+                        })
+                        document.getElementById('123').innerHTML="";
+                        document.getElementById('123').innerHTML = html;
+                        starClick();
+                    }
+                })
+            })
+            */
+        })
+    </script>
+</head>
+<body>
+<thead>
+<tr>
+    <th>#</th>
+    <th>영화</th>
+    <a href="/">홈으로</a>
+</tr>
+<br>
+</thead>
+<tbody>
+<table id = "123">
+</table>
+</tbody>
+</body>
+</html>

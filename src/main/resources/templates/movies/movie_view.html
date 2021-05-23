@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <!-- 합쳐지고 최소화된 최신 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <!-- 부가적인 테마 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            var movieId = $('#movieId').val();
+            outputComment();
+
+            function outputComment() {
+                var html = '';
+                var sendData = {"movieId" : movieId};
+                $.ajax({
+                    url: '/movies/loadComment',
+                    method: 'POST',
+                    data: sendData,
+                    success: function (resp) {
+                        html += '<ul class="list-group">';
+                        $.each(resp, function (index, item) {
+                            html += '<li class="list-group-item"><p><b>' + item["memberName"] + '</b>';
+                            if (item["is_my_comment"] == 1) {
+                                html += '<span class="glyphicon glyphicon-remove del" style="float: right" id="' + item["commentId"] + '"></span>'
+                            }
+                            html += '</p>';
+                            html += '<p>' + item["comment"] + '</p></li>';
+                        })
+                        html += '</ul>';
+                        if (resp.length == 0) html = '<p>아직 댓글이 없습니다.</p>';
+                        document.getElementById('commetList').innerHTML = html;
+                    }
+                })
+            }
+
+            $(document).on("click", ".del", function () {
+                var a = $(this).attr("id");
+                if (confirm("해당 댓글을 삭제하시겠습니까?")) {
+                    var sendData = {"commentId" : a}
+                    $.ajax({
+                        url: '/movies/deleteComment',
+                        method: 'POST',
+                        data: sendData,
+                        success: function (resp) {
+                            alert("삭제 완료");
+                            outputComment();
+                        }
+                    })
+                } else {
+
+                }
+            })
+
+            $('#commentForm').submit(function () {
+                var text = $('#comment').val();
+                var sendData = {"text" : text, "movieId" : movieId}
+                $.ajax({
+                    url: '/movies/inputComment',
+                    method: 'GET',
+                    data: sendData,
+                    success: function (resp) {
+                        alert("댓글 입력");
+                        outputComment();
+                    }
+                })
+            })
+        })
+    </script>
+    <meta charset="UTF-8">
+    <title th:text="${findMovie.title}"></title>
+
+</head>
+<body style="background-color: burlywood">
+
+<div class="container" style="background-color: white">
+    <div class="page-header">
+        <h1 th:text="${findMovie.getTitle()}">Example page header <small th:text="">Subtext for header</small></h1>
+    </div>
+    <div class="col-md-4">
+        <img th:src="${findMovie.getImg_link()}">
+    </div>
+    <div class="col-md-8">
+        <input type="hidden" id="movieId" th:value="${findMovie.id}">
+        <b>장르 :</b> <td th:each="genre : ${findMovie.getGenreList()}">
+        <span th:text="${genre.genre.genre}"></span>
+        </td><br><br>
+        <b>감독 :</b> <span th:text="${findMovie.getDirector()}" ></span><br><br>
+        <b>배우 :</b> <span th:text="${findMovie.getActor()}"></span><br><br>
+        <b>줄거리</b><br><p th:text="${findMovie.getOutline()}"></p><br>
+    </div>
+    <div class="col-md-12">
+        <form id="commentForm">
+            <div class="form-group">
+                <label for="comment">댓글 작성</label>
+                <input type="text" class="form-control" id="comment"  placeholder="영화에 대한 자신의 생각을 적어주세요">
+            </div>
+            <button type="submit" class="btn btn-default btn-sm" style="float: right">입력</button>
+        </form>
+        <br>
+        <p style="font-size: 200%">댓글</p>
+        <div id="commetList">
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

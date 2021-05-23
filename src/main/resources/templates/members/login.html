@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--<form role="form" action="/members/login" th:object="${memberLoginForm}" method="post">-->
+<!--    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+<!--    <div>-->
+<!--        <label th:for="email">이메일</label>-->
+<!--        <input type="text" th:field="*{email}" placeholder="이메일" autofocus>-->
+<!--        <small class = "exist error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">exist error</small>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <label th:for="password">패스워드</label>-->
+<!--        <input type="text" th:field="*{password}" placeholder="패스워드">-->
+<!--        <small class = "exist error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">exist error</small>-->
+<!--    </div>-->
+
+<!--    <button type="submit">Submit</button>-->
+<!--</form>-->
+<form role="form" action="/members/login" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <div>
+        <label >이메일</label>
+        <input type="text" name="username" placeholder="이메일" autofocus>
+    </div>
+    <div>
+        <label >패스워드</label>
+        <input type="text" name="password" placeholder="패스워드">
+    </div>
+
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>

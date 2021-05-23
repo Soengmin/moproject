@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>mydictionary</title>
+</head>
+<body>
+<td th:each="ppap : ${mem_dic}">
+    <span th:text="${ppap.key}"></span> <span th:text="${ppap.value}"></span></span> /
+</td>
+</body>
+</html>
