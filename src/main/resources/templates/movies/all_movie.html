@@ -78,7 +78,7 @@
                 let div_id = 'detail_' + click_class;
                 let ti = $(title).attr('value')
                 let text = '<h3>' + ti + '</h3>';
-                text += '<div class="star1"></div>';
+                text += '<div class="star1"'+'id='+click_class+'>'+'</div>';
                 document.getElementById(div_id).innerHTML = text;
                 starClick()
             })
