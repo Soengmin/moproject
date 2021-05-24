@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class SecApplication {
 
     public static void main(String[] args) {
-
         SpringApplication.run(SecApplication.class, args);
     }
 

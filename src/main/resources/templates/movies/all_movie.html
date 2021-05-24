@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <!-- 합쳐지고 최소화된 최신 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <!-- 부가적인 테마 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script th:src="@{/js/jquery.star-rating-svg.js}"></script>
     <link rel="stylesheet" th:href="@{/css/star-rating-svg.css}">
     <title>Title</title>
@@ -19,10 +27,13 @@
                 success : function (resp) {
                     sequence += 20;
                     $.each(resp, function (index, item) {
-                        html += '<div style="display:inline-block; height: auto; width: 18%; border: 1px solid red; text-align: center; overflow: hidden;">';
-                        html += '<img src="' + item["img_link"] + '" style="height: auto; width: 100%" id="' + item["id"] + '" class="movie_img">';
+                        html += '<div class="col-xs-4 col-sm-3 col-md-3 col-lg-2" style="height: 500px">';
+                        html += '<div class="thumbnail">';
+                        html += '<a href="/movies/view/' + item["id"] + '">';
+                        html += '<img src="' + item["img_link"] + '" style="max-width: 100%; height: auto" class="movie_img">';
+                        html += '</a><div class="caption"';
                         html += '<p>' + item["title"] + '</p>';
-                        html += '<div class="star1" id ="' + item["id"] + '"></div></div>';
+                        html += '<div class="star1" id ="' + item["id"] + '"></div></div></div></div>';
                     })
                     document.getElementById('123').innerHTML = html;
                     starClick();
@@ -33,6 +44,7 @@
         function starClick()  {
             $('.star1').starRating({
                 totalStars: 5,
+                starSize: 20,
                 emptyColor: 'lightgray',
                 hoverColor: 'salmon',
                 activeColor: 'cornflowerblue',
