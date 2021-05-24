@@ -105,6 +105,12 @@
                 <li><a href="/movies/explore_movie">장르별 검색</a></li>
                 </li>
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="javascript:document.logout.submit();">로그아웃</a></li>
+                <form  name="logout" id="logout" action="/logout" method="POST">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                </form>
+            </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
