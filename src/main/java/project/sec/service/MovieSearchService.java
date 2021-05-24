@@ -16,9 +16,8 @@ public class MovieSearchService {
     private final MovieRepository movieRepository;
 
     public List<Movie> search(String title){
-        List<Movie> movies = movieRepository.findByTitleContaining(title);
-        Movie movie = movies.get(0);
-        System.out.println(movie.getTitle());
-        return movieRepository.findByTitleContaining(title);
+        //Movie movie = movies.get(0);
+        //System.out.println(movie.getTitle());
+        return movieRepository.findByTitleContainingOrActorContainingOrDirectorContaining(title, title, title);
     }
 }

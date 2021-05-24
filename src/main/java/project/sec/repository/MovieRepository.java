@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface MovieRepository extends JpaRepository<Movie,Long> {
     List<Movie> findByTitleContaining(String title);
+    List<Movie> findByTitleContainingOrActorContainingOrDirectorContaining(String title, String title1,String title2);
+    //List<Movie> findByTitleAndActorAndDirectorContaining(String title);
 }
