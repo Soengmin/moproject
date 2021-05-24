@@ -18,21 +18,22 @@
         var sequence = 0;
         let score;
         var html = '';
+
         function testajax() {
-            var sendData = {"sequence":sequence}
+            var sendData = {"sequence": sequence}
             $.ajax({
-                url:'/movies/is_ajax',
-                method :'POST',
+                url: '/movies/is_ajax',
+                method: 'POST',
                 data: sendData,
-                success : function (resp) {
+                success: function (resp) {
                     sequence += 20;
                     $.each(resp, function (index, item) {
                         html += '<div class="col-xs-4 col-sm-3 col-md-3 col-lg-2"  id="' + item["id"] + '" style="height: 500px">';
                         html += '<div class="thumbnail">';
                         html += '<a href="/movies/view/' + item["id"] + '">';
-                        html += '<img src="' + item["img_link"] + '" style="max-width: 100%; " class="movie_img"  id="' + item["id"] + '">';
+                        html += '<img src="' + item["img_link"] + '" style="max-width: 100%; " class="movie_img"  id="img_' + item["id"] + '">';
                         html += '</a><div class="caption"';
-                        html += '<input type="hidden" id="title_'+ item["id"] +'" value="'+ item["title"] +'">'
+                        html += '<input type="hidden" id="title_' + item["id"] + '" value="' + item["title"] + '">'
                         html += '<div style="position: absolute; top:50%;left: 50%;transform: translate(-50%,-50%)"  id = "detail_' + item["id"] + '" class="test"></div></div></div></div>';
                     })
                     document.getElementById('123').innerHTML = html;
@@ -41,17 +42,17 @@
             })
         }
 
-        function starClick()  {
+        function starClick() {
             $('.star1').starRating({
                 totalStars: 5,
-                starSize: 20,
-                emptyColor: 'lightgray',
+                starSize: 30,
+                emptyColor: 'gray',
                 hoverColor: 'salmon',
                 activeColor: 'cornflowerblue',
                 initialRating: 0,
                 strokeWidth: 0,
                 useGradient: false,
-                callback: function(currentRating){
+                callback: function (currentRating) {
                     score = currentRating;
                 }
             });
@@ -62,32 +63,33 @@
             starClick();
             $(document).on("click", ".star1", function () {
                 let click_movie_id = $(this).attr('id');
-                let sendData = {"movie_id":click_movie_id,"input":score};
+                let sendData = {"movie_id": click_movie_id, "input": score};
                 $.ajax({
-                    url:'/movies/is_ajaxx',
-                    method :'GET',
-                    data:sendData
+                    url: '/movies/is_ajaxx',
+                    method: 'GET',
+                    data: sendData
                 })
                 alert("감사합니다");
             })
 
-            $(document).on("mouseenter",".movie_img",function (){
+            $(document).on("mouseenter", ".col-xs-4", function () {
                 let click_class = $(this).attr('id');
-                document.getElementById(click_class).style.opacity='0.6';
+                document.getElementById('img_'+click_class).style.opacity = '0.35';
                 let title = "#title_" + click_class;
                 let div_id = 'detail_' + click_class;
                 let ti = $(title).attr('value')
-                let text = '<h3>' + ti + '</h3>';
-                text += '<div class="star1"'+'id='+click_class+'>'+'</div>';
+                let text = '<h3><b>' + ti + '</b></h3>';
+                text += '<div class="star1"' + 'id=' + click_class + '>' + '</div>';
                 document.getElementById(div_id).innerHTML = text;
                 starClick()
             })
 
 
-            $(document).on("mouseleave",".col-xs-4",function (){
+            $(document).on("mouseleave", ".col-xs-4", function () {
                 let click_class = $(this).attr('id');
-                document.getElementById(click_class).style.opacity='1';
+                document.getElementById('img_'+click_class).style.opacity = '1';
                 let div_id = 'detail_' + click_class;
+                $('.' + div_id).removeClass("oppaDiv");
                 //let title = "#title_" + click_class;
                 //let ti = $(title).attr('value')
                 let text = '';
@@ -105,6 +107,7 @@
             })
         })
     </script>
+
 </head>
 <body>
 <thead>
@@ -126,7 +129,7 @@
 <!--    </div>-->
 <!--</td>-->
 <!--<input type="button" onclick="testajax()" value="인생씨발...">-->
-<table id = "123">
+<table id="123">
 </table>
 </tbody>
 </body>
