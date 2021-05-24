@@ -36,3 +36,15 @@
   -webkit-filter: drop-shadow( -2px -2px 2px #888 );
   filter: drop-shadow( -2px -2px 2px #888 );
 }
+.darkness {
+  position:absolute;
+  top:0;
+  left:0;
+  width:inherit;
+  height:inherit;
+  background:#000000;
+  /* 추가된 부분 */
+  opacity:0;
+  transition:all .6s linear;
+}
+
