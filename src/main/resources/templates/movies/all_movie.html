@@ -14,6 +14,11 @@
     <script th:src="@{/js/jquery.star-rating-svg.js}"></script>
     <link rel="stylesheet" th:href="@{/css/star-rating-svg.css}">
     <title>Title</title>
+    <style>
+        body {
+            padding-top: 70px;
+        }
+    </style>
     <script>
         var sequence = 0;
         let score;
@@ -110,27 +115,40 @@
 
 </head>
 <body>
-<thead>
-<tr>
-    <th>#</th>
-    <th>영화</th>
-    <a href="/">홈으로</a>
-</tr>
-</br>
-</thead>
-<tbody>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">홈으로</a>
+        </div>
 
-<!--<td th:each="movie : ${movieList}">-->
-<!--    <div style="display:inline-block; height: auto; width: 18%; border: 1px solid red; text-align: center;-->
-<!--overflow: hidden;">-->
-<!--        <img th:src="${movie.img_link}" style="height: auto; width: 100%" th:id="${movie.id}"-->
-<!--        class="movie_img">-->
-<!--        <p th:text="${movie.title}"><p>-->
-<!--    </div>-->
-<!--</td>-->
-<!--<input type="button" onclick="testajax()" value="인생씨발...">-->
-<table id="123">
-</table>
-</tbody>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/movies/search">검색하기</a></li>
+                <li class="active"><a href="/movies/allMovie">평가하기</a></li>
+                <li><a href="/movies/myeval_movie">내가 평가한 영화</a></li>
+                <li><a href="/movies/explore_movie">장르별 검색</a></li>
+                <li class="dropdown" id="111">
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="javascript:document.logout.submit();">로그아웃</a></li>
+                <form  name="logout" id="logout" action="/logout" method="POST">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                </form>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="container-fluid" id="123">
+</div>
 </body>
+
 </html>
