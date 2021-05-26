@@ -3,97 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <!-- 합쳐지고 최소화된 최신 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <!-- 부가적인 테마 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script th:src="@{/js/jquery.star-rating-svg.js}"></script>
     <link rel="stylesheet" th:href="@{/css/star-rating-svg.css}">
     <title>Title</title>
-    <script>
-        function starClick()  {
-            $('.star1').starRating({
-                totalStars: 5,
-                emptyColor: 'lightgray',
-                hoverColor: 'salmon',
-                activeColor: 'cornflowerblue',
-                initialRating: 0,
-                strokeWidth: 0,
-                useGradient: false,
-                callback: function(currentRating){
-                    score = currentRating;
-                }
-            });
+    <style>
+        body {
+            padding-top: 70px;
         }
-
+    </style>
+    <script>
         $(function () {
-            starClick();
-            $(document).on("click", ".star1", function () {
-                let click_movie_id = $(this).attr('id');
-                let sendData = {"movie_id":click_movie_id,"input":score};
-                $.ajax({
-                    url:'/movies/is_ajaxx',
-                    method :'GET',
-                    data:sendData
-                })
-                alert("감사합니다");
-            })
             let html ='';
-
-            // merge를 위한 수정
-            // merge를 위한 수정 2
             $.ajax({
                 url:'/movies/myeval_movie',
                 method :'POST',
                 success : function (resp) {
                     $.each(resp, function (index, item) {
-                        html += '<div style="display:inline-block; height: auto; width: 18%; border: 1px solid red; text-align: center; overflow: hidden;">';
-                        html += '<img src="' + item["img_link"] + '" style="height: auto; width: 100%" id="' + item["id"] + '" class="movie_img">';
+                        html += '<div class="col-xs-4 col-sm-3 col-md-3 col-lg-2" style="height: 500px">';
+                        html += '<div class="thumbnail">';
+                        html += '<a href="/movies/view/' + item["id"] + '">';
+                        html += '<img src="' + item["img_link"] + '" style="max-width: 100%; height: auto" class="movie_img">';
+                        html += '</a><div class="caption"';
                         html += '<p>' + item["title"] + '</p>';
-                        html += '<div class="star1" id ="' + item["id"] + '"></div></div>';
+                        html += '<div class="star1" id ="' + item["id"] + '"></div></div></div></div>';
                     })
                     document.getElementById('123').innerHTML="";
                     document.getElementById('123').innerHTML = html;
-                    starClick();
                 }
             })
-
-
-            /*
-            $(document).on("click", ".findbutton", function () {
-                let html ='';
-                let find = $(".find").val();
-                alert(find)
-                let sendData = {"find":find};
-                $.ajax({
-                    url:'/movies/search',
-                    method :'POST',
-                    data: sendData,
-                    success : function (resp) {
-                        $.each(resp, function (index, item) {
-                            html += '<div style="display:inline-block; height: auto; width: 18%; border: 1px solid red; text-align: center; overflow: hidden;">';
-                            html += '<img src="' + item["img_link"] + '" style="height: auto; width: 100%" id="' + item["id"] + '" class="movie_img">';
-                            html += '<p>' + item["title"] + '</p>';
-                            html += '<div class="star1" id ="' + item["id"] + '"></div></div>';
-                        })
-                        document.getElementById('123').innerHTML="";
-                        document.getElementById('123').innerHTML = html;
-                        starClick();
-                    }
-                })
-            })
-            */
         })
     </script>
 </head>
 <body>
-<thead>
-<tr>
-    <th>#</th>
-    <th>영화</th>
-    <a href="/">홈으로</a>
-</tr>
-<br>
-</thead>
-<tbody>
-<table id = "123">
-</table>
-</tbody>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">홈으로</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/movies/search">검색하기</a></li>
+                <li><a href="/movies/allMovie">평가하기</a></li>
+                <li class="active"><a href="/movies/myeval_movie">내가 평가한 영화</a></li>
+                <li><a href="/movies/explore_movie">장르별 검색</a></li>
+                <li class="dropdown" id="111">
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="javascript:document.logout.submit();">로그아웃</a></li>
+                <form  name="logout" id="logout" action="/logout" method="POST">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                </form>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="container-fluid" id="123">
+</div>
 </body>
 </html>

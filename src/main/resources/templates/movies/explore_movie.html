@@ -48,7 +48,7 @@
                         html += '<div class="star1" id ="' + item["id"] + '"></div></div></div></div>';
                     })
                     document.getElementById('123').innerHTML = html;
-                    starClick();
+                    //starClick();
                 }
             })
         }
@@ -75,13 +75,6 @@
                 url: '/movies/explore_movie',
                 method: 'POST',
                 success: function (resp) {
-/*                    html1 += '<div class="dropdown">' +
-                        '<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">\n' +
-                        '장르' + '<span class="caret"></span>' + '</button>' + '<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">'
-                    $.each(resp, function (index, item) {
-                    })
-                    html1 += '</ul></div>'*/
-
                     html1 += '<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">장르<span class="caret"></span></a>';
                     html1 += '<ul class="dropdown-menu" role="menu">';
                     $.each(resp, function (index, item) {
