@@ -29,6 +29,10 @@ public class MemberValidator implements Validator {
             errors.rejectValue("email","email.error","이미 사용중인 이메일입니다.");
         } else if(memberRepository.findBynicName(memberForm.getNicname()).size() == 1){
             errors.rejectValue("nicname","nicname.error","이미 사용중인 닉네임입니다.");
+        } else if (memberForm.getNicname().length() == 0
+        || memberForm.getPassword().length() == 0
+        || memberForm.getEmail().length() == 0) {
+            errors.rejectValue("password", "blank.error", "모든 칸에 공백이 없게해주세요");
         }
     }
 }
