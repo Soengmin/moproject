@@ -2,10 +2,45 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>회원가입</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
+    <!-- 합쳐지고 최소화된 최신 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <!-- 부가적인 테마 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <style type='text/css'>
+
+        body {
+            background-image: url("https://i.imgur.com/cesxS4s.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+
+        .well {
+            background: rgba(0,0,0,0.5);
+            border-color: black;
+        }
+
+        * {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .overlap {
+            color: red;
+        }
+
+    </style>
 </head>
 <body>
-<form role="form" action="/members/signup" th:object="${memberForm}" method="post">
+<!--<form role="form" action="/members/signup" th:object="${memberForm}" method="post">
     <div>
         <label th:for="email">이메일</label>
         <input type="text" th:field="*{email}" placeholder="이메일" autofocus>
@@ -26,6 +61,39 @@
     </div>
 
     <button type="submit">Submit</button>
-</form>
+</form>-->
+
+<div class="container">
+    <div class="well" style="width: 25%; height: auto; position:absolute; top:50%; left:50%; margin-top:-10%; margin-left:-12.5%;">
+        <p style="text-align: center"><b style="font-size: 20px; color: white;">회원가입</b></p>
+        <form class="form-horizontal" action="/members/signup" th:object="${memberForm}" method="post">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" style="color: white" th:for="email">Email</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" th:field="*{email}" placeholder="이메일, 로그인 시 사용됩니다.">
+                    <small class = "overlap" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">overlap error</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" th:for="nicname" style="color: white">NickName</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" th:field="*{nicname}" placeholder="별명">
+                    <small class = "overlap" th:if="${#fields.hasErrors('nicname')}" th:errors="*{nicname}">overlap error</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" th:for="password" style="color: white">Password</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" th:field="*{password}" placeholder="패스워드">
+                </div>
+            </div>
+            <div class="form-group">
+                <div>
+                    <button type="submit" class="btn btn-default btn-sm" style="float: right; margin-right: 10px">회원가입</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 </body>
 </html>
