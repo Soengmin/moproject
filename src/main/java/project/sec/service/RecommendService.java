@@ -33,7 +33,7 @@ public class RecommendService {
                 if(!movies.contains(evalList.getMovie_id().getId())) {
                     //System.out.println(evalList.getMovie_id().getId());
                     movies.add(evalList.getMovie_id().getId());
-                    if(movies.size()>5){
+                    if(movies.size()>20){
                         break;
                     }
                 }
@@ -41,7 +41,7 @@ public class RecommendService {
             for(EvalList basic : basicList){
                 movies.remove(basic.getMovie_id().getId());
             }
-            if(movies.size() >4){
+            if(movies.size() >20){
                 break;
             }
         }

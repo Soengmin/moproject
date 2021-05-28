@@ -2,6 +2,7 @@ package project.sec.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -9,7 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 
     @RequestMapping("/")
-    public String home(){
-        return "home";
+    public String login(){
+        return "members/login";
     }
+
+    @GetMapping("/home")
+    public String home(){return "home";}
 }

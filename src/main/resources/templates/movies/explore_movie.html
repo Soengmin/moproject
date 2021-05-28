@@ -53,22 +53,6 @@
             })
         }
 
-        function starClick() {
-            $('.star1').starRating({
-                totalStars: 5,
-                starSize: 20,
-                emptyColor: 'lightgray',
-                hoverColor: 'salmon',
-                activeColor: 'cornflowerblue',
-                initialRating: 0,
-                strokeWidth: 0,
-                useGradient: false,
-                callback: function (currentRating) {
-                    score = currentRating;
-                }
-            });
-        }
-
         $(function () {
             let html1 = '';
             $.ajax({
@@ -85,20 +69,6 @@
                 }
 
             })
-            starClick();
-            $(document).on("click", ".star1", function () {
-                let click_movie_id = $(this).attr('id');
-                let sendData = {"movie_id": click_movie_id, "input": score};
-                $.ajax({
-                    url: '/movies/is_ajaxx',
-                    method: 'GET',
-                    data: sendData,
-                    success: function (resp) {
-
-                    }
-                })
-                alert("감사합니다");
-            })
 
             $(document).on("click", ".aaa", function () {
                 sequence = 0;
@@ -107,12 +77,11 @@
                 testajax();
             })
 
-
             $(document).scroll(function () {
                 var maxHeight = $(document).height();
                 var currentScroll = $(window).scrollTop() + $(window).height();
 
-                if (maxHeight <= currentScroll) {
+                if (maxHeight <= currentScroll + 1) {
                     testajax();
                 }
             })
@@ -130,7 +99,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">홈으로</a>
+            <a class="navbar-brand" href="/home">홈으로</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
