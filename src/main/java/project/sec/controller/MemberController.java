@@ -46,6 +46,7 @@ public class MemberController {
         memberValidator.validate(memberForm, errors);
         //System.out.println(errors.hasErrors());
         if (!errors.hasErrors()) {
+            memberForm.setAuth("ROLE_USER");
             Member member = new Member(memberForm);
             memberService.save(memberForm);
             return "redirect:/";
