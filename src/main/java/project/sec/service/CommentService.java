@@ -34,7 +34,7 @@ public class CommentService {
     }
 
     public List<CommentDTO> loadComment(Long movieId, String email) {
-        List<Comment> comments = em.createQuery("select c from Comment c where c.movie_id.id = :id", Comment.class)
+        List<Comment> comments = em.createQuery("select c from Comment c where c.movie_id.id = :id order by c.id desc", Comment.class)
                 .setParameter("id", movieId)
                 .getResultList();
         Member member = memberRepository.findByEmail(email).get(0);
