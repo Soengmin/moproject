@@ -48,13 +48,13 @@ public class MovieController {
 
     @ResponseBody
     @RequestMapping(value = "/movies/is_ajax", method = RequestMethod.POST)
-    public List<Movie> ajaaja(int sequence) {
+    public List<Movie> ajaaja(int sequence, Authentication auth) {
         System.out.println("sequence = " + sequence);
-        List<Movie> find = em.createQuery("select m from Movie m", Movie.class)
+/*        List<Movie> find = em.createQuery("select m from Movie m", Movie.class)
                 .setFirstResult(sequence)
                 .setMaxResults(20)
-                .getResultList();
-        return find;
+                .getResultList();*/
+        return movieSearchService.createRandomTable(sequence, auth.getName());
     }
     @ResponseBody
     @RequestMapping(value = "/movies/is_ajaxx", method = RequestMethod.GET)
