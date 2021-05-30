@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.sec.domain.Member;
 import project.sec.domain.Movie;
 import project.sec.repository.MovieRepository;
 import sun.security.krb5.internal.EncTicketPart;
@@ -33,15 +34,20 @@ public class MovieSearchService {
     @Transactional
     @Modifying
     public List<Movie> createRandomTable(int sequence, String name) {
+        Member member = em.createQuery("select m from Member m where m.email = :name", Member.class)
+                .setParameter("name", name)
+                .getResultList()
+                .get(0);
+        String id = "table" + member.getId();
         if (sequence == 0) {
-            String q = "drop table if exists " + name;
+            String q = "drop table if exists " + id;
             em.createNativeQuery(q).executeUpdate();
         }
-        String sql = "CREATE TEMPORARY TABLE IF NOT EXISTS " + name + " Select * From MOVIE order by rand()";
+        String sql = "CREATE TEMPORARY TABLE IF NOT EXISTS " + id + " Select * From MOVIE order by rand()";
         int i = em.createNativeQuery(sql, Movie.class)
                 .executeUpdate();
 
-        sql = "select * from " + name;
+        sql = "select * from " + id;
         List<Movie> resultList = em.createNativeQuery(sql, Movie.class)
                 .setFirstResult(sequence)
                 .setMaxResults(20)

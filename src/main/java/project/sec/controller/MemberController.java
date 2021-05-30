@@ -6,10 +6,10 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import project.sec.domain.Member;
 import project.sec.repository.MemberRepository;
+import project.sec.service.MailService;
 import project.sec.service.MemberService;
 import project.sec.service.MemberValidator;
 import project.sec.service.MemberLoginValidator;
@@ -26,6 +26,7 @@ public class MemberController {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
     private final MemberValidator memberValidator;
+    private final MailService mailService;
 
 
     @GetMapping("/members/members")
@@ -64,5 +65,12 @@ public class MemberController {
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
         return "redirect:/home";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/members/inputSignupForm", method = RequestMethod.POST)
+    public String certValue(@RequestParam(value = "email")String email) {
+        System.out.println("!!!!!!!!!!!!!!");
+        return mailService.mailsend(email);
     }
 }
