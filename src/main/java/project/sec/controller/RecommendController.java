@@ -18,16 +18,21 @@ import java.util.List;
 public class RecommendController {
     private final RecommendService recommendService;
 
-    @GetMapping( "movies/recommend")
-    public String recommend() {
-        return "movies/recommend";
-    }
-
     @ResponseBody
     @RequestMapping(value = "/movies/recommend", method = RequestMethod.POST)
     public List<Movie> precommend(Authentication auth) {
-        List<Movie> movies = recommendService.recommend(auth.getName());
+        List<Movie> movies = recommendService.userRecommend(auth.getName());
         System.out.println(movies.size());
         return movies;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/movies/pop", method = RequestMethod.POST)
+    public List<Movie> popRecommend(){
+
+        List<Movie> list = recommendService.populorRecommend();
+        for(Movie movie : list){
+            System.out.println(movie.getTitle());
+        }
+        return recommendService.populorRecommend();
     }
 }

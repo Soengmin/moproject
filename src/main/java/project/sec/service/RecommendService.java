@@ -9,10 +9,7 @@ import project.sec.repository.MemberRepository;
 import project.sec.repository.MovieRepository;
 import scala.Int;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +19,7 @@ public class RecommendService {
     private final MemberRepository memberRepository;
     private final MovieRepository movieRepository;
 
-    public List<Movie> recommend(String email){
+    public List<Movie> userRecommend(String email){
         List<String> list = vectorService.cosSim(email);
         List<EvalList> basicList = evalListRepository.findByMemberId(memberRepository.findByEmail(email).get(0));
         List<Long> movies = new ArrayList<>();
@@ -50,5 +47,15 @@ public class RecommendService {
             mov.add(movieRepository.findById(movie).get());
         }
         return mov;
+    }
+
+    public List<Movie> populorRecommend(){
+        List<Movie> list = movieRepository.findTop50ByOrderByIdDesc();
+        List<Movie> list1 = new ArrayList<>();
+        list.subList(0, 30).clear();
+        for(int i =0;i<20;i++) {
+            list1.add(list.get(list.size()-i-1));
+        }
+        return list1;
     }
 }

@@ -57,7 +57,7 @@ public class dicControl {
         Long b = System.currentTimeMillis();
         System.out.println(b - a);
         //vectorService.cosSim(email);
-        recommendService.recommend(email);
+        recommendService.userRecommend(email);
         return "/myDic";
     }
 }

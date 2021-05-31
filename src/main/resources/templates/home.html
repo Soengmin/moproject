@@ -34,18 +34,37 @@
             height : 200px;
             overflow: hidden;
         }
-        .slides{
+        .slides1{
             position: absolute;
             left: 0;
             top: 0;
         }
+
+        .slides {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .slides1 .animated{
+            transition: 0.5s ease-out;
+        }
         .slides .animated{
             transition: 0.5s ease-out;
+        }
+        .slides1 li{
+            width : 200px;
+            height : 200px;
+            float: left;
         }
         .slides li{
             width : 200px;
             height : 200px;
             float: left;
+        }
+
+        .slides1 li:not(:last-child){
+            margin-right: 25px;
         }
         .slides li:not(:last-child){
             margin-right: 25px;
@@ -102,13 +121,23 @@
 
     <div style="height: 35px"><h2>당신을 위한 추천 ><</h2></div>
     <div class="slide_wrapper">
-    <ul class="slides" id="123">
-    </ul>
-</div>
+        <ul class="slides" id="123">
+        </ul>
+    </div>
     <p class="controls">
-    <span class="prev">prev</span>
-    <span class="next">next</span>
-</p>
+        <span class="prev">prev</span>
+        <span class="next">next</span>
+    </p>
+
+    <div style="height: 35px"><h2>인기작 ><</h2></div>
+    <div class="slide_wrapper">
+        <ul class="slides1" id="124">
+        </ul>
+    </div>
+    <p class="controls">
+        <span class="prev1">prev</span>
+        <span class="next1">next</span>
+    </p>
     <script>
         let sequence = 0;
         let score;
@@ -135,7 +164,30 @@
                 }
             })
         }
+
+        function pop() {
+            html = '';
+            //let sendData = {"sequence": sequence, "genre_id": click_genre_id}
+            $.ajax({
+                url: '/movies/pop',
+                method: 'POST',
+                async:false,
+                //data: sendData,
+                success: function (resp) {
+                    //sequence += 20;
+                    $.each(resp, function (index, item) {
+                        //html += '<div style="height: 200px;width: 660px;position: relative;overflow: hidden">';
+                        //html += '<div class="thumbnail">';
+                        html += '<li><a href="/movies/view/' + item["id"] + '">';
+                        html += '<img src="' + item["img_link"] + '" style="position: absolute; width: 200px; height: 200px" class="movie_img">';
+                        html += '</a></li>';
+                    })
+                    document.getElementById('124').innerHTML = html;
+                }
+            })
+        }
         testajax();
+        pop();
         $(function () {
 
             $(document).scroll(function () {
@@ -149,5 +201,6 @@
         })
     </script>
     <script th:src="@{/js/script.js}"></script>
+    <script th:src="@{/js/script2.js}"></script>
 </body>
 </html>

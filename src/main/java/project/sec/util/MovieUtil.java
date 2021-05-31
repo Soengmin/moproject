@@ -42,9 +42,9 @@ public class MovieUtil {
         // true : 당일 날짜 영화 순위만 크롤링, false : 기간 설정
         String url = "https://movie.naver.com/movie/sdb/rank/rmovie.nhn?sel=cnt&tg=0&date=";
         String date = "";
-        int year = 2015;
-        int month = 6;
-        int day = 1;
+        int year = 2021;
+        int month = 5;
+        int day = 30;
         int count = 0;
 
         for (; ; ) {
@@ -176,7 +176,7 @@ public class MovieUtil {
                 }
             }
 
-            if (year <= 2014 || is_scheduled) {
+            if (year == 2021 || month == 5 || day == 30 || is_scheduled) {
                 System.out.println("저장된 영화 = " + count + "개");
                 break;
             } else {

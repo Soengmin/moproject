@@ -9,14 +9,14 @@
  */
 
 ;(function ( $, window, document, undefined ) {
-    let slides = document.querySelector('.slides1');
-    let slide = document.querySelectorAll('.slides1 li'),
+    let slides = document.querySelector('.slides');
+    let slide = document.querySelectorAll('.slides li'),
         currentIdx = 0,
         slideCount = slide.length,
         slideWidth = 200,
         slideMargin = 25,
-        prevBtn = document.querySelector('.prev1'),
-        nextBtn = document.querySelector('.next1');
+        prevBtn = document.querySelector('.prev'),
+        nextBtn = document.querySelector('.next');
 
     makeClone();
 
@@ -39,7 +39,7 @@
     }
 
     function updateWidth(){
-        let currentSlides = document.querySelectorAll('.slides1 li');
+        let currentSlides = document.querySelectorAll('.slides li');
         let newSlideCount = currentSlides.length;
 
         let newwidth = (slideWidth + slideMargin) *newSlideCount - slideMargin + 'px';
