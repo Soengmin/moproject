@@ -1,6 +1,8 @@
 package project.sec.service;
 
 import lombok.AllArgsConstructor;
+import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.SimpleEmail;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -25,9 +27,8 @@ public class MailService {
         msg += "가입해주셔서 감사합니다\n";
         msg = msg + "인증번호는 " + certNum + " 입니다.";
         message.setText(msg);
-
         mailSender.send(message);
-        System.out.println("email : " + address + " certNum : " + certNum);
+
         return certNum;
     }
 }

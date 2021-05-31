@@ -70,7 +70,6 @@ public class MemberController {
     @ResponseBody
     @RequestMapping(value = "/members/inputSignupForm", method = RequestMethod.POST)
     public String certValue(@RequestParam(value = "email")String email) {
-        System.out.println("!!!!!!!!!!!!!!");
         return mailService.mailsend(email);
     }
 }
