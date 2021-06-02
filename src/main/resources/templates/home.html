@@ -14,7 +14,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <!--<script th:src="@{/js/jquery.star-rating-svg.js}"></script>-->
     <link rel="stylesheet" th:href="@{/css/star-rating-svg.css}">
-    <script th:src="@{/js/script.js}"></script>
     <title>start</title>
     <style>
         *{
@@ -127,6 +126,12 @@
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                 </form>
             </ul>
+            <form class="navbar-form navbar-right" action="/movies/search" method="get" name="form_search" role="search">
+                <div class="form-group">
+                    <input type="text" id="input_search" name="search" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">검색</button>
+            </form>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
@@ -214,32 +219,30 @@
 
                 }
             })
-
+/*
             $(document).on("mouseenter", ".slide_wrapper", function () {
                 let text = '<button style="font-size: xx-large; left: 0;position: absolute; top:50%" class="glyphicon glyphicon-menu-left prev" aria-hidden="true"></button>';
                 text+= '<button style="font-size: xx-large; right: 0;position: absolute; top:50%" class="glyphicon glyphicon-menu-right next" aria-hidden="true"></button>';
                 document.getElementById("10").innerHTML = text;
-
             })
 
             $(document).on("mouseleave", ".slide_wrapper", function () {
                 document.getElementById("10").innerHTML = '';
-                moveSlide();
             })
 
             $(document).on("mouseenter", ".slide_wrapper1", function () {
                 document.getElementById('11').innerHTML = '<button style="font-size: xx-large; left: 0;position: absolute; top:50%" class="glyphicon glyphicon-menu-left prev1" aria-hidden="true"></button>\n' +
                     '<button style="font-size: xx-large; right: 0;position: absolute; top:50%" class="glyphicon glyphicon-menu-right next1" aria-hidden="true"></button>\n';
-                moveSlide();
             })
 
             $(document).on("mouseleave", ".slide_wrapper1", function () {
                 document.getElementById("11").innerHTML = '';
-                moveSlide();
             })
 
-
+*/
         })
+
+
 
 
     </script>
