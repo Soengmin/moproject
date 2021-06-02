@@ -75,6 +75,7 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li><a th:text="${member.nicName}"></a></li>
                 <li><a href="javascript:document.logout.submit();">로그아웃</a></li>
                 <form  name="logout" id="logout" action="/logout" method="POST">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />

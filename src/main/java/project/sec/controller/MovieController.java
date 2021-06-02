@@ -6,7 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import project.sec.domain.Genre;
+import project.sec.domain.Member;
 import project.sec.domain.Movie;
+import project.sec.repository.MemberRepository;
 import project.sec.service.*;
 import project.sec.util.NaverMovieSearch;
 
@@ -17,9 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MovieController {
 
-    private final NaverMovieSearch naverMovieSearch;
-    private final MemberLoginValidator memberloginValidator;
-    private final EntityManager em;
+    private final MemberRepository memberRepository;
     private final MovieService movieService;
     private final GenreService genreService;
     private final Movie_GenreService movie_genreService;
@@ -28,8 +28,10 @@ public class MovieController {
 
 
     @GetMapping("/movies/search")
-    public String GfindMovie(@RequestParam(value = "search", required = false) String search, Model model){
+    public String GfindMovie(@RequestParam(value = "search", required = false) String search, Model model,Authentication auth){
+        Member member = memberRepository.findByEmail(auth.getName()).get(0);
         model.addAttribute("searchValue", search);
+        model.addAttribute("member",member);
         return "movies/search";
     }
 
@@ -41,8 +43,9 @@ public class MovieController {
     }
 
     @GetMapping("/movies/allMovie")
-    public String all_movie(Model model) {
-
+    public String all_movie(Model model, Authentication auth) {
+        Member member = memberRepository.findByEmail(auth.getName()).get(0);
+        model.addAttribute("member",member);
         return "movies/all_movie";
     }
 
@@ -67,8 +70,9 @@ public class MovieController {
         movieService.save(email,movie_id,rating);
     }
     @GetMapping("/movies/explore_movie")
-    public String exploremoive(Model model) {
-
+    public String exploremoive(Model model,Authentication auth) {
+        Member member = memberRepository.findByEmail(auth.getName()).get(0);
+        model.addAttribute("member",member);
         return "movies/explore_movie";
     }
     @ResponseBody
@@ -86,7 +90,9 @@ public class MovieController {
     }
 
     @GetMapping(value = "movies/view/{id}")
-    public String MovieView(@PathVariable("id") Long id, Model model) {
+    public String MovieView(@PathVariable("id") Long id, Model model,Authentication auth) {
+        Member member = memberRepository.findByEmail(auth.getName()).get(0);
+        model.addAttribute("member",member);
         Movie findMovie = movieService.findById(id);
         model.addAttribute("findMovie", findMovie);
 
@@ -94,7 +100,9 @@ public class MovieController {
     }
 
     @GetMapping( "movies/myeval_movie")
-    public String evalmovie() {
+    public String evalmovie(Model model, Authentication auth) {
+        Member member = memberRepository.findByEmail(auth.getName()).get(0);
+        model.addAttribute("member",member);
         return "movies/myeval_movie";
     }
 
