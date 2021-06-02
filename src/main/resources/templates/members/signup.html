@@ -56,6 +56,7 @@
             $('#send_cert').click(function () {
                 var email = $('#email').val();
                 var data = {"email" : email};
+                $('#send_cert').attr('disabled', true);
 
                 $.ajax({
                     url: '/members/inputSignupForm',
@@ -114,7 +115,7 @@
                         <input type="text" name="certification" disabled="true" id="input_certification" class="form-control" placeholder="인증번호를 입력해주세요.">
                     </div>
                     <div class="col-sm-5">
-                        <button type="button" id="send_cert" class="btn btn-default btn-sm">인증번호 발송</button>
+                        <button type="button" id="send_cert" class="btn btn-default btn-sm">인증번호 전송</button>
                     </div>
                 </div>
             </div>

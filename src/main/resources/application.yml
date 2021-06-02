@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/smdb?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
-    password: 1234
+    password: a28574a357
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:

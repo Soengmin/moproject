@@ -28,7 +28,8 @@ public class MovieController {
 
 
     @GetMapping("/movies/search")
-    public String GfindMovie(){
+    public String GfindMovie(@RequestParam(value = "search", required = false) String search, Model model){
+        model.addAttribute("searchValue", search);
         return "movies/search";
     }
 
@@ -36,7 +37,6 @@ public class MovieController {
     @ResponseBody
     @RequestMapping(value = "/movies/search", method = RequestMethod.POST)
     public List<Movie> search(String find) {
-        System.out.println(find);
         return movieSearchService.search(find);
     }
 
