@@ -30,9 +30,6 @@ public class RecommendController {
     public List<Movie> popRecommend(){
 
         List<Movie> list = recommendService.populorRecommend();
-        for(Movie movie : list){
-            System.out.println(movie.getTitle());
-        }
         return recommendService.populorRecommend();
     }
 }

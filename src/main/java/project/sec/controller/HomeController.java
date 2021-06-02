@@ -24,7 +24,6 @@ public class HomeController {
     @GetMapping("/home")
     public String home(Authentication auth, Model model){
         Member member = memberRepository.findByEmail(auth.getName()).get(0);
-        System.out.println(member.getNicName());
         model.addAttribute("member",member);
         return "home";
     }

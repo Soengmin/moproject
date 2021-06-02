@@ -63,9 +63,9 @@ public class MovieController {
     @RequestMapping(value = "/movies/is_ajaxx", method = RequestMethod.GET)
     public void ajaaja2(@RequestParam(value = "movie_id") Long movie_id,@RequestParam(value = "input") double rating, Authentication auth) {
         String email = auth.getName();
-        System.out.println(movie_id);
-        System.out.println(rating);
-        System.out.println(email);
+        //System.out.println(movie_id);
+        //System.out.println(rating);
+       // System.out.println(email);
 
         movieService.save(email,movie_id,rating);
     }
