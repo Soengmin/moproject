@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,6 +14,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <!--<script th:src="@{/js/jquery.star-rating-svg.js}"></script>-->
     <link rel="stylesheet" th:href="@{/css/star-rating-svg.css}">
+    <script th:src="@{/js/script.js}"></script>
     <title>start</title>
     <style>
         *{
@@ -29,7 +30,14 @@
         }
         .slide_wrapper{
             position: relative;
-            width: 1525px;
+            width: auto;
+            margin: 0 auto;
+            height : 200px;
+            overflow: hidden;
+        }
+        .slide_wrapper1{
+            position: relative;
+            width: auto;
             margin: 0 auto;
             height : 200px;
             overflow: hidden;
@@ -70,18 +78,22 @@
             margin-right: 25px;
         }
         .controls{
-            text-align: center;
             margin-top: 50px;
+            vertical-align: middle;
         }
+
         li{
             list-style: none;
         }
+        /*
         .controls span{
             background:#333;
             color: #fff;
             padding:10px 20px;
             margin:0 10px;
         }
+
+         */
     </style>
 
 </head>
@@ -123,21 +135,23 @@
     <div class="slide_wrapper">
         <ul class="slides" id="123">
         </ul>
+        <div style="vertical-align: middle;" class="controls" id="10">
+            <button style="font-size: xx-large; left: 0;position: absolute; top:50%" class="glyphicon glyphicon-menu-left prev" aria-hidden="true"></button>
+            <button style="font-size: xx-large; right: 0;position: absolute; top:50%" class="glyphicon glyphicon-menu-right next" aria-hidden="true"></button>
+        </div>
     </div>
-    <p class="controls">
-        <span class="prev">prev</span>
-        <span class="next">next</span>
-    </p>
+
 
     <div style="height: 35px"><h2>인기작 ><</h2></div>
-    <div class="slide_wrapper">
+    <div class="slide_wrapper1">
         <ul class="slides1" id="124">
         </ul>
+        <div style="vertical-align: middle" class="controls" id="11">
+            <button style="font-size: xx-large; left: 0;position: absolute; top:50%" class="glyphicon glyphicon-menu-left prev1" aria-hidden="true"></button>
+            <button style="font-size: xx-large; right: 0;position: absolute; top:50%" class="glyphicon glyphicon-menu-right next1" aria-hidden="true"></button>
+        </div>
     </div>
-    <p class="controls">
-        <span class="prev1">prev</span>
-        <span class="next1">next</span>
-    </p>
+
     <script>
         let sequence = 0;
         let score;
@@ -188,6 +202,8 @@
         }
         testajax();
         pop();
+
+
         $(function () {
 
             $(document).scroll(function () {
@@ -198,7 +214,34 @@
 
                 }
             })
+
+            $(document).on("mouseenter", ".slide_wrapper", function () {
+                let text = '<button style="font-size: xx-large; left: 0;position: absolute; top:50%" class="glyphicon glyphicon-menu-left prev" aria-hidden="true"></button>';
+                text+= '<button style="font-size: xx-large; right: 0;position: absolute; top:50%" class="glyphicon glyphicon-menu-right next" aria-hidden="true"></button>';
+                document.getElementById("10").innerHTML = text;
+
+            })
+
+            $(document).on("mouseleave", ".slide_wrapper", function () {
+                document.getElementById("10").innerHTML = '';
+                moveSlide();
+            })
+
+            $(document).on("mouseenter", ".slide_wrapper1", function () {
+                document.getElementById('11').innerHTML = '<button style="font-size: xx-large; left: 0;position: absolute; top:50%" class="glyphicon glyphicon-menu-left prev1" aria-hidden="true"></button>\n' +
+                    '<button style="font-size: xx-large; right: 0;position: absolute; top:50%" class="glyphicon glyphicon-menu-right next1" aria-hidden="true"></button>\n';
+                moveSlide();
+            })
+
+            $(document).on("mouseleave", ".slide_wrapper1", function () {
+                document.getElementById("11").innerHTML = '';
+                moveSlide();
+            })
+
+
         })
+
+
     </script>
     <script th:src="@{/js/script.js}"></script>
     <script th:src="@{/js/script2.js}"></script>
