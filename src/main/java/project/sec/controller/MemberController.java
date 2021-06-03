@@ -17,6 +17,7 @@ import project.sec.service.MemberLoginValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -73,7 +74,7 @@ public class MemberController {
     }
 
     @PostMapping("/members/changeAuth")
-    public String changeAuth(Authentication auth) {
+    public String changeAuth(Authentication auth, HttpServletRequest request) {
         memberService.changeAuth(auth.getName());
         return "home";
     }
