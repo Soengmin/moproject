@@ -21,24 +21,6 @@ public class MemberService implements UserDetailsService {
     private final EntityManager em;
     private final MemberRepository memberRepository;
 
-    public void jungbokNicName(String name, Errors errors) {
-        List<Member> find = em.createQuery("select m from Member m where m.nicName = :name", Member.class)
-                .setParameter("name", name)
-                .getResultList();
-
-        if (!find.isEmpty()) {
-            errors.rejectValue("nicname", "key", "이미 사용자 이름이 존재합니다.");
-        }
-    }
-
-    public boolean jungbokEmail(String email) {
-        List<Member> find = em.createQuery("select m from Member m where m.email = :email", Member.class)
-                .setParameter("email", email)
-                .getResultList();
-
-        return find.isEmpty();
-    }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         List<Member> findname = memberRepository.findByEmail(username);

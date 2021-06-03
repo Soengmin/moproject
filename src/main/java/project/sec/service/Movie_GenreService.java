@@ -40,10 +40,6 @@ public class Movie_GenreService {
             movies.add((Movie)o[0]);
         }
 
-//        for(Movie_Genre mov_genre : movie_genres){
-//            movies.add(mov_genre.getMovie());
-//        }
-
         return movies;
     }
 }

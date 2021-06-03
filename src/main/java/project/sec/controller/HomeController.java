@@ -16,11 +16,6 @@ import project.sec.repository.MemberRepository;
 public class HomeController {
     private final MemberRepository memberRepository;
 
-/*    @RequestMapping("/")
-    public String login(){
-        return "home";
-    }*/
-
     @GetMapping("/")
     public String home(Authentication auth, Model model){
         Member member = memberRepository.findByEmail(auth.getName()).get(0);

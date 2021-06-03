@@ -45,13 +45,11 @@ public class VectorService {
         Long userId = memberRepository.findByEmail(email).get(0).getId();
         List<Integer> stanvec = userVector(userId);
         List<Member> members = memberRepository.findAll();
-        //System.out.println(memberRepository.findByEmail(email).get(0).getEmail());
         members.remove(memberRepository.findByEmail(email).get(0));
 
         List<List<Integer>> vectors = new ArrayList<>();
 
         for (Member member : members) {
-            //System.out.println(member.getEmail());
             vectors.add(userVector(member.getId()));
         }
 
@@ -79,7 +77,6 @@ public class VectorService {
 
         List<String> list = new ArrayList<>(cossim.keySet());
         list.sort((o1, o2) -> (cossim.get(o2).compareTo(cossim.get(o1))));
-        System.out.println(list.toString());
         return list;
     }
 }

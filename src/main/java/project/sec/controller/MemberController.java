@@ -45,10 +45,8 @@ public class MemberController {
     @PostMapping("/members/signup")
     public String PMemberNew(@Valid MemberForm memberForm, Model model, Errors errors) {
         memberValidator.validate(memberForm, errors);
-        //System.out.println(errors.hasErrors());
         if (!errors.hasErrors()) {
             memberForm.setAuth("ROLE_USER");
-            Member member = new Member(memberForm);
             memberService.save(memberForm);
             return "redirect:/";
         }

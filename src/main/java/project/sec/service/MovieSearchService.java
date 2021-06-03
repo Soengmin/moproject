@@ -26,8 +26,6 @@ public class MovieSearchService {
     private final EntityManager em;
 
     public List<Movie> search(String title){
-        //Movie movie = movies.get(0);
-        //System.out.println(movie.getTitle());
         return movieRepository.findByTitleContainingOrActorContainingOrDirectorContaining(title, title, title);
     }
 
