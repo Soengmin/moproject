@@ -28,10 +28,11 @@ public class MovieController {
 
 
     @GetMapping("/movies/search")
-    public String GfindMovie(@RequestParam(value = "search", required = false) String search, Model model,Authentication auth){
+    public String GfindMovie(@RequestParam(value = "search", required = true) String search, Model model,Authentication auth){
         Member member = memberRepository.findByEmail(auth.getName()).get(0);
         model.addAttribute("searchValue", search);
         model.addAttribute("member",member);
+        if (search.equals("")) return "home";
         return "movies/search";
     }
 
