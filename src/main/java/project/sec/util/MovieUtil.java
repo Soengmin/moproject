@@ -42,9 +42,9 @@ public class MovieUtil {
         // true : 당일 날짜 영화 순위만 크롤링, false : 기간 설정
         String url = "https://movie.naver.com/movie/sdb/rank/rmovie.nhn?sel=cnt&tg=0&date=";
         String date = "";
-        int year = 2016;
-        int month = 5;
-        int day = 30;
+        int year = 2021;
+        int month = 06;
+        int day = 03;
         int count = 0;
 
         for (; ; ) {
@@ -94,15 +94,18 @@ public class MovieUtil {
                     movie.setOutline(e2.text());
 
                     // ====== 감독, 배우
-                    String search = nms.search(movie.getTitle());
-                    List<MovieForm> apiResult = nms.fromJsontoMovies(search);
-                    for (MovieForm movieForm : apiResult) {
-                        if (movie.getLink().equals(movieForm.getLink())) {
-                            movie.setActor(movieForm.getActor().replace("<b>", "")
-                                    .replace("</b>", ""));
-                            movie.setDirector(movieForm.getDirector().replace("<b>", "")
-                                    .replace("</b>", ""));
+                    try {
+                        String search = nms.search(movie.getTitle());
+                        List<MovieForm> apiResult = nms.fromJsontoMovies(search);
+                        for (MovieForm movieForm : apiResult) {
+                            if (movie.getLink().equals(movieForm.getLink())) {
+                                movie.setActor(movieForm.getActor().replace("<b>", "")
+                                        .replace("</b>", ""));
+                                movie.setDirector(movieForm.getDirector().replace("<b>", "")
+                                        .replace("</b>", ""));
+                            }
                         }
+                    } catch (Exception e){
                     }
 
                     em.persist(movie);
@@ -176,7 +179,7 @@ public class MovieUtil {
                 }
             }
 
-            if (year <= 2015 || is_scheduled) {
+            if (year <= 2004 || is_scheduled) {
                 System.out.println("저장된 영화 = " + count + "개");
                 break;
             } else {
