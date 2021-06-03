@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import project.sec.controller.MemberForm;
 import project.sec.domain.Member;
@@ -40,5 +41,14 @@ public class MemberService implements UserDetailsService {
                 .nicName(memberForm.getNicname())
                 .auth(memberForm.getAuth())
                 .password(memberForm.getPassword()).build()).getId();
+    }
+
+    @Transactional
+    public void changeAuth(String email) {
+        Member member = em.createQuery("select m from Member m where m.email = :email", Member.class)
+                .setParameter("email", email)
+                .getResultList()
+                .get(0);
+        member.setAuth("ROLE_USER");
     }
 }

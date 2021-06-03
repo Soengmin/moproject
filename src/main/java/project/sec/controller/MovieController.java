@@ -103,4 +103,15 @@ public class MovieController {
         List<Movie> movie = myEvalMovieService.find(auth.getName());
         return movie;
     }
+
+    @GetMapping("movies_first_eval")
+    public String mf() {
+        return "mvoies/first_eval";
+    }
+
+    @PostMapping(value = "movies/update_first_eval")
+    @ResponseBody
+    public int updateEval(Authentication auth) {
+        return movieService.getEvelCount(auth.getName());
+    }
 }

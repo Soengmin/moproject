@@ -26,8 +26,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/members/login", "/members/signup", "/members/memberList", "/members/inputSignupForm").permitAll()
+                .antMatchers("/movies/all_movie", "/movies/explore_movies", "/movies/_movie_view"
+                ,"movies/myeval_movie", "/movies/search").hasRole("USER")
                 .antMatchers("/movies/is_ajax").permitAll()
-                .antMatchers("movies/movieList", "movies/find").hasRole("USER")
+                .antMatchers("/movies/first_eval").hasRole("NOTYET")
+                .antMatchers("/").hasAnyRole("USER", "NOTYET")
                 .anyRequest().authenticated()
                 .and()
                 .csrf()
@@ -46,10 +49,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .ignoringAntMatchers("/movies/recommend")
                 .ignoringAntMatchers("/movies/pop")
                 .ignoringAntMatchers("/members/inputSignupForm")
+                .ignoringAntMatchers("/movies/update_first_eval"
+                , "/members/changeAuth")
                 .and()
                 .formLogin()
                 .loginPage("/members/login")
-                .defaultSuccessUrl("/home")
+                .defaultSuccessUrl("/")
                 .and()
                 .logout()
                 .logoutSuccessUrl("/")

@@ -19,6 +19,7 @@ public class HomeController {
     @GetMapping("/")
     public String home(Authentication auth, Model model){
         Member member = memberRepository.findByEmail(auth.getName()).get(0);
+        if (auth.getAuthorities().toString().equals("[ROLE_NOTYET]")) return "/movies/first_eval";
         model.addAttribute("member",member);
         return "home";
     }

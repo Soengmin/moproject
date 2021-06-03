@@ -11,6 +11,7 @@ import project.sec.repository.MemberRepository;
 import project.sec.repository.MovieRepository;
 import project.sec.repository.MyEvalListRepository;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +23,7 @@ public class MovieService {
     private final MovieRepository movieRepository;
     private final MyEvalListRepository myEvalListRepository;
     private final DictionaryService dictionaryService;
+    private final EntityManager em;
 
     public void save(String email,Long m_id, double rating){
         Member member = memberRepository.findByEmail(email).get(0);
@@ -37,5 +39,12 @@ public class MovieService {
     public Movie findById(Long id) {
         Optional<Movie> find = movieRepository.findById(id);
         return find.get();
+    }
+
+    public int getEvelCount(String user) {
+        return em.createQuery("select e from EvalList e where e.memberId.email = :email", EvalList.class)
+                .setParameter("email", user)
+                .getResultList()
+                .size();
     }
 }

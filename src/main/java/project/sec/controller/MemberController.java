@@ -1,6 +1,7 @@
 package project.sec.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -46,7 +47,7 @@ public class MemberController {
     public String PMemberNew(@Valid MemberForm memberForm, Model model, Errors errors) {
         memberValidator.validate(memberForm, errors);
         if (!errors.hasErrors()) {
-            memberForm.setAuth("ROLE_USER");
+            memberForm.setAuth("ROLE_NOTYET");
             memberService.save(memberForm);
             return "redirect:/";
         }
@@ -69,5 +70,11 @@ public class MemberController {
     @RequestMapping(value = "/members/inputSignupForm", method = RequestMethod.POST)
     public String certValue(@RequestParam(value = "email")String email) {
         return mailService.mailsend(email);
+    }
+
+    @PostMapping("/members/changeAuth")
+    public String changeAuth(Authentication auth) {
+        memberService.changeAuth(auth.getName());
+        return "home";
     }
 }

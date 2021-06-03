@@ -56,6 +56,10 @@ public class Member implements UserDetails {
         return roles;
     }
 
+    public void setAuth(String auth) {
+        this.auth = auth;
+    }
+
     @Override
     public String getUsername() {
         return email;
