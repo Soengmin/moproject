@@ -179,7 +179,7 @@ public class MovieUtil {
                 }
             }
 
-            if (year <= 2004 || is_scheduled) {
+            if (year <= 2017 || is_scheduled) {
                 System.out.println("저장된 영화 = " + count + "개");
                 break;
             } else {

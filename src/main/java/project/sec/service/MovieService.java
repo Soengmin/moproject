@@ -32,8 +32,9 @@ public class MovieService {
         Movie movie1 = movie.get();
 
         //===========여기에 member_dictionary 추가
-        dictionaryService.saveMovieMemberDic(member, movie1,(int)rating);
-        myEvalListRepository.save_eval(member,movie1,rating);
+        int result = myEvalListRepository.save_eval(member, movie1, rating);
+        // result : 1이면 이미 평가한 영화, 0이면 한번도 평가하지 않은 영화
+        if (result == 0) dictionaryService.saveMovieMemberDic(member, movie1,(int)rating);
     }
 
     public Movie findById(Long id) {

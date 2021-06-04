@@ -16,7 +16,7 @@ public class MyEvalListRepository {
     private final EntityManager em;
 
     @Transactional
-    public void save_eval(Member member, Movie movie, double rating) {
+    public int save_eval(Member member, Movie movie, double rating) {
         System.out.println(member.getId() + " " + movie.getId());
         List<EvalList> resultList = em.createQuery("select e from EvalList e where e.memberId = :memid and e.movie_id = :movid", EvalList.class)
                 .setParameter("memid", member)
@@ -24,10 +24,13 @@ public class MyEvalListRepository {
                 .getResultList();
         if (resultList.size() == 1) {
             resultList.get(0).setScore(rating);
+            return 1;
         }
         else if (resultList.size() == 0) {
             EvalList evalList = new EvalList(member, movie, rating);
             em.persist(evalList);
+            return 0;
         }
+        return 0;
     }
 }
