@@ -25,12 +25,13 @@
                     success: function (resp) {
                         html += '<ul class="list-group">';
                         $.each(resp, function (index, item) {
-                            html += '<li class="list-group-item"><p><b>' + item["memberName"] + '</b>';
+                            html += '<li id ="000" class="list-group-item"><p><b>' + item["memberName"] + '</b>';
                             if (item["is_my_comment"] == 1) {
                                 html += '<span class="glyphicon glyphicon-remove del" style="float: right" id="' + item["commentId"] + '"></span>'
                             }
                             html += '</p>';
-                            html += '<p>' + item["comment"] + '</p></li>';
+                            html += '<p>' + item["comment"] + '</p>';
+                            html += '<button class="butsave" id="'+item["commentId"]+'">답글 달기</button><button class="butshow" id="'+item["commentId"]+'">답글 보기</button></li>';
                         })
                         html += '</ul>';
                         if (resp.length == 0) html = '<p>아직 댓글이 없습니다.</p>';
@@ -55,6 +56,38 @@
                 } else {
 
                 }
+            })
+
+            $(document).on("click", ".butsave", function () {
+                let a = $(this).attr("id");
+                let content = prompt("답글을 입력하세요");
+                alert(content);
+                let sendData = {"commentId" : a, "content" : content};
+                $.ajax({
+                    url: '/movies/recommentsave',
+                    method:'POST',
+                    data : sendData,
+                    success:function (resp){
+                        alert(123);
+                    }
+                })
+
+            })
+
+            $(document).on("click", ".butshow", function () {
+                let a = $(this).attr("id");
+                alert(a);
+                let html = '';
+                let sendData = {"commentId" : a};
+                $.ajax({
+                    url : '/movies/recomment',
+                    method:'POST',
+                    data : sendData,
+                    success: function (resp) {
+
+                    }
+                })
+
             })
 
             $('#commentForm').submit(function () {

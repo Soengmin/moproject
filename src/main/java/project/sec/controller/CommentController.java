@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import project.sec.domain.Comment;
 import project.sec.domain.CommentDTO;
+import project.sec.domain.Recomment;
 import project.sec.service.CommentService;
 
 import java.util.List;
@@ -37,4 +38,6 @@ public class CommentController {
     public void deleteComment(Long commentId) {
         commentService.deleteComment(commentId);
     }
+
+
 }
