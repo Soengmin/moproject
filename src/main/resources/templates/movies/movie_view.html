@@ -68,7 +68,7 @@
                     method:'POST',
                     data : sendData,
                     success:function (resp){
-                        alert(123);
+                        alert("입력완료");
                     }
                 })
 
@@ -76,7 +76,6 @@
 
             $(document).on("click", ".butshow", function () {
                 let a = $(this).attr("id");
-                alert(a);
                 let html = '';
                 let sendData = {"commentId" : a};
                 $.ajax({
@@ -84,7 +83,12 @@
                     method:'POST',
                     data : sendData,
                     success: function (resp) {
-
+                        $.each(resp, function (index, item) {
+                            //alert(item["content"]);
+                            html += '<p><b>' + item["memberName"] + '</b>';
+                            html += '<p>' + item["content"] + '</p></p>';
+                        })
+                        document.getElementById('000').innerHTML += html;
                     }
                 })
 

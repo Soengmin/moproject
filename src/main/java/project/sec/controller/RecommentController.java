@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import project.sec.domain.Recomment;
+import project.sec.domain.RecommentDto;
 import project.sec.service.RecommendService;
 import project.sec.service.RecommentService;
 
@@ -20,10 +21,8 @@ public class RecommentController {
 
     @RequestMapping(value = "/movies/recomment", method = RequestMethod.POST)
     @ResponseBody
-    public List<Recomment> reComment(Authentication auth, Long commentId){
-        List<Recomment> recomments = recommentService.loadComment(commentId);
-        System.out.println(recomments.get(0).getId());
-        return recomments;
+    public List<RecommentDto> reComment(Authentication auth, Long commentId){
+        return recommentService.loadComment(commentId);
     }
 
     @RequestMapping(value = "/movies/recommentsave", method = RequestMethod.POST)
