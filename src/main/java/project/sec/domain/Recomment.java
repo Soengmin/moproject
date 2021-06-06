@@ -20,10 +20,12 @@ public class Recomment {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Member memberId;
 
     @ManyToOne
     @JoinColumn(name = "comment")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Comment comment;
 
 
