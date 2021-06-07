@@ -40,7 +40,7 @@ public class RecommentService {
         recommentRepository.save(recomment);
     }
 
-    public List<RecommentDto> delete(Long id, String email){
+    public List<RecommentDto> delete(Long id){
         recommentRepository.deleteById(id);
         List<Recomment> recomments = recommentRepository.findAll();
         List<RecommentDto> recommentDtos = new ArrayList<>();
@@ -49,5 +49,15 @@ public class RecommentService {
             recommentDtos.add(recommentDto);
         }
         return recommentDtos;
+    }
+
+    public void deleteParent(Long id){
+        //id는 Comment의 id
+        System.out.println(id);
+        Comment comment = commentRepository.getOne(id);
+        List<Recomment> recomments = recommentRepository.findByComment(comment);
+        for(Recomment recomment : recomments){
+            recommentRepository.deleteById(recomment.getId());
+        }
     }
 }

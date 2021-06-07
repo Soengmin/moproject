@@ -34,6 +34,6 @@ public class RecommentController {
     @RequestMapping(value = "/movies/recommentdelete", method = RequestMethod.POST)
     @ResponseBody
     public List<RecommentDto> delete(Long id,Authentication auth){
-        return recommentService.delete(id,auth.getName());
+        return recommentService.delete(id);
     }
 }

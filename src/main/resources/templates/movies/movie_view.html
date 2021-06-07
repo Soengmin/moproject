@@ -32,7 +32,7 @@
                             html += '</p>';
                             html += '<p>' + item["comment"] + '</p>';
                             html += '<div id="re' + item["commentId"] + '"></div>';
-                            html += '<button class="butsave" id="'+item["commentId"]+'">답글 달기</button><button class="butshow" id="'+item["commentId"]+'">답글 보기</button></li>';
+                            html += '<button class="butsave" id="'+item["commentId"]+'">답글 달기</button><button class="butshow" id="btn'+item["commentId"]+'">답글 보기</button></li>';
                         })
                         html += '</ul>';
                         if (resp.length == 0) html = '<p>아직 댓글이 없습니다.</p>';
@@ -113,17 +113,25 @@
 
             $(document).on("click", ".butshow", function () {
                 let a = $(this).attr("id");
-                recomment(a);
-                $(".butshow").addClass("act").html("답글 접기");
-                $(".act").removeClass("butshow");
+                let b = a.replace("btn","");
+                recomment(b);
+                document.getElementById(a).classList.add("act");
+                document.getElementById(a).innerText="답글 접기";
+                document.getElementById(a).classList.remove("butshow");
+                /*
+                $().addClass("act").html("답글 접기");
+                $(a).removeClass("butshow");
+
+                 */
             })
 
             $(document).on("click",".act",function (){
                 let a = $(this).attr("id");
-                let newId = "re"+a;
-                document.getElementById(newId).innerHTML = "";
-                $(".act").addClass("butshow").html("답글 펼치기");
-                $(".butshow").removeClass("act");
+                let b = "re"+a.replace("btn","");
+                document.getElementById(b).innerHTML = "";
+                document.getElementById(a).classList.add("butshow");
+                document.getElementById(a).innerText="답글 보기";
+                document.getElementById(a).classList.remove("act");
 
             })
 

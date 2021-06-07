@@ -18,6 +18,7 @@ import java.util.List;
 public class CommentService {
     private final EntityManager em;
     private final MemberRepository memberRepository;
+    private final RecommentService recommentService;
 
     @Transactional
     public void inputComment(String email, long movieId, String text) {
@@ -53,10 +54,12 @@ public class CommentService {
 
     @Transactional
     public void deleteComment(Long commentId) {
+        recommentService.deleteParent(commentId);
         Comment comment = em.createQuery("select c from Comment c where c.id = :id", Comment.class)
                 .setParameter("id", commentId)
                 .getResultList()
                 .get(0);
         em.remove(comment);
+
     }
 }
