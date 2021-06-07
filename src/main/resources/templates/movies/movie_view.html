@@ -25,17 +25,37 @@
                     success: function (resp) {
                         html += '<ul class="list-group">';
                         $.each(resp, function (index, item) {
-                            html += '<li id ="000" class="list-group-item"><p><b>' + item["memberName"] + '</b>';
+                            html += '<li class="list-group-item"><p><b>' + item["memberName"] + '</b>';
                             if (item["is_my_comment"] == 1) {
                                 html += '<span class="glyphicon glyphicon-remove del" style="float: right" id="' + item["commentId"] + '"></span>'
                             }
                             html += '</p>';
                             html += '<p>' + item["comment"] + '</p>';
+                            html += '<div id="re' + item["commentId"] + '"></div>';
                             html += '<button class="butsave" id="'+item["commentId"]+'">답글 달기</button><button class="butshow" id="'+item["commentId"]+'">답글 보기</button></li>';
                         })
                         html += '</ul>';
                         if (resp.length == 0) html = '<p>아직 댓글이 없습니다.</p>';
                         document.getElementById('commetList').innerHTML = html;
+                    }
+                })
+            }
+
+            function recomment(a) {
+                let newId = "re"+a;
+                let html = '';
+                let sendData = {"commentId" : a};
+                $.ajax({
+                    url : '/movies/recomment',
+                    method:'POST',
+                    data : sendData,
+                    success: function (resp) {
+                        $.each(resp, function (index, item) {
+                            html += '<p><b>'+ "-" + item["memberName"] + '</b>';
+                            html += '<span class="glyphicon glyphicon-remove redel" style="float: right" id="' + item["id"] + '"></span>'
+                            html += '<p>' + item["content"] + '</p></p>';
+                        })
+                        document.getElementById(newId).innerHTML = html;
                     }
                 })
             }
@@ -58,10 +78,26 @@
                 }
             })
 
+            $(document).on("click", ".redel", function () {
+                //답글의 id
+                var a = $(this).attr("id");
+                //html 내용을 넣기위한 댓글의 id
+                let c = $(".butsave").attr("id");
+                let sendData = {"id" : a};
+                $.ajax({
+                    url : '/movies/recommentdelete',
+                    method:'POST',
+                    data : sendData,
+                    success: function (resp) {
+                        alert("삭제완료");
+                        recomment(c);
+                    }
+                })
+            })
+
             $(document).on("click", ".butsave", function () {
                 let a = $(this).attr("id");
                 let content = prompt("답글을 입력하세요");
-                alert(content);
                 let sendData = {"commentId" : a, "content" : content};
                 $.ajax({
                     url: '/movies/recommentsave',
@@ -69,6 +105,7 @@
                     data : sendData,
                     success:function (resp){
                         alert("입력완료");
+                        recomment(a);
                     }
                 })
 
@@ -76,21 +113,17 @@
 
             $(document).on("click", ".butshow", function () {
                 let a = $(this).attr("id");
-                let html = '';
-                let sendData = {"commentId" : a};
-                $.ajax({
-                    url : '/movies/recomment',
-                    method:'POST',
-                    data : sendData,
-                    success: function (resp) {
-                        $.each(resp, function (index, item) {
-                            //alert(item["content"]);
-                            html += '<p><b>' + item["memberName"] + '</b>';
-                            html += '<p>' + item["content"] + '</p></p>';
-                        })
-                        document.getElementById('000').innerHTML += html;
-                    }
-                })
+                recomment(a);
+                $(".butshow").addClass("act").html("답글 접기");
+                $(".act").removeClass("butshow");
+            })
+
+            $(document).on("click",".act",function (){
+                let a = $(this).attr("id");
+                let newId = "re"+a;
+                document.getElementById(newId).innerHTML = "";
+                $(".act").addClass("butshow").html("답글 펼치기");
+                $(".butshow").removeClass("act");
 
             })
 

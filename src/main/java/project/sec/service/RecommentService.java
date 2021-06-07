@@ -26,7 +26,7 @@ public class RecommentService {
         List<Recomment> recomments = recommentRepository.findByComment(comment);
         List<RecommentDto> recommentDtos = new ArrayList<>();
         for(Recomment recomment : recomments) {
-            RecommentDto recommentDto = new RecommentDto(recomment.getMemberId().getNicName(),recomment.getContent());
+            RecommentDto recommentDto = new RecommentDto(recomment.getId(),recomment.getMemberId().getNicName(),recomment.getContent());
             recommentDtos.add(recommentDto);
         }
         return recommentDtos;
@@ -40,7 +40,14 @@ public class RecommentService {
         recommentRepository.save(recomment);
     }
 
-    public void delete(Long id){
+    public List<RecommentDto> delete(Long id, String email){
         recommentRepository.deleteById(id);
+        List<Recomment> recomments = recommentRepository.findAll();
+        List<RecommentDto> recommentDtos = new ArrayList<>();
+        for(Recomment recomment : recomments){
+            RecommentDto recommentDto = new RecommentDto(recomment.getId(),recomment.getMemberId().getNicName(),recomment.getContent());
+            recommentDtos.add(recommentDto);
+        }
+        return recommentDtos;
     }
 }
