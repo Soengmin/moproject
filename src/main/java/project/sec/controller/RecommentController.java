@@ -22,7 +22,7 @@ public class RecommentController {
     @RequestMapping(value = "/movies/recomment", method = RequestMethod.POST)
     @ResponseBody
     public List<RecommentDto> reComment(Authentication auth, Long commentId){
-        return recommentService.loadComment(commentId);
+        return recommentService.loadComment(commentId,auth.getName());
     }
 
     @RequestMapping(value = "/movies/recommentsave", method = RequestMethod.POST)
@@ -33,7 +33,7 @@ public class RecommentController {
 
     @RequestMapping(value = "/movies/recommentdelete", method = RequestMethod.POST)
     @ResponseBody
-    public List<RecommentDto> delete(Long id,Authentication auth){
-        return recommentService.delete(id);
+    public void delete(Long id,Authentication auth){
+        recommentService.delete(id);
     }
 }

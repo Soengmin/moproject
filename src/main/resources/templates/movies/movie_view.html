@@ -26,13 +26,13 @@
                         html += '<ul class="list-group">';
                         $.each(resp, function (index, item) {
                             html += '<li class="list-group-item"><p><b>' + item["memberName"] + '</b>';
-                            if (item["is_my_comment"] == 1) {
+                            if (item["is_my_comment"] === 1) {
                                 html += '<span class="glyphicon glyphicon-remove del" style="float: right" id="' + item["commentId"] + '"></span>'
                             }
                             html += '</p>';
                             html += '<p>' + item["comment"] + '</p>';
                             html += '<div id="re' + item["commentId"] + '"></div>';
-                            html += '<button class="butsave" id="'+item["commentId"]+'">답글 달기</button><button class="butshow" id="btn'+item["commentId"]+'">답글 보기</button></li>';
+                            html += '<button class="butsave" id="bt'+item["commentId"]+'">답글 달기</button><button class="butshow" id="btn'+item["commentId"]+'">답글 보기</button></li>';
                         })
                         html += '</ul>';
                         if (resp.length == 0) html = '<p>아직 댓글이 없습니다.</p>';
@@ -52,7 +52,9 @@
                     success: function (resp) {
                         $.each(resp, function (index, item) {
                             html += '<p><b>'+ "-" + item["memberName"] + '</b>';
-                            html += '<span class="glyphicon glyphicon-remove redel" style="float: right" id="' + item["id"] + '"></span>'
+                            if(item["memberName"] === item["otherNic"]) {
+                                html += '<span class="glyphicon glyphicon-remove redel" style="float: right" id="' + item["id"] + '"></span>'
+                            }
                             html += '<p>' + item["content"] + '</p></p>';
                         })
                         document.getElementById(newId).innerHTML = html;
@@ -83,6 +85,7 @@
                 var a = $(this).attr("id");
                 //html 내용을 넣기위한 댓글의 id
                 let c = $(".butsave").attr("id");
+                c = c.replace("bt","");
                 let sendData = {"id" : a};
                 $.ajax({
                     url : '/movies/recommentdelete',
@@ -97,15 +100,20 @@
 
             $(document).on("click", ".butsave", function () {
                 let a = $(this).attr("id");
+                let b = a.replace("bt","");
+                let c = "btn" + b;
                 let content = prompt("답글을 입력하세요");
-                let sendData = {"commentId" : a, "content" : content};
+                let sendData = {"commentId" : b, "content" : content};
                 $.ajax({
                     url: '/movies/recommentsave',
                     method:'POST',
                     data : sendData,
                     success:function (resp){
                         alert("입력완료");
-                        recomment(a);
+                        recomment(b);
+                        document.getElementById(c).classList.add("act");
+                        document.getElementById(c).innerText="답글 접기";
+                        document.getElementById(c).classList.remove("butshow");
                     }
                 })
 

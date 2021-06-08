@@ -21,12 +21,13 @@ public class RecommentService {
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
 
-    public List<RecommentDto> loadComment(Long commentId){
+    public List<RecommentDto> loadComment(Long commentId,String email){
+        String nic = memberRepository.findByEmail(email).get(0).getNicName();
         Comment comment = commentRepository.getOne(commentId);
         List<Recomment> recomments = recommentRepository.findByComment(comment);
         List<RecommentDto> recommentDtos = new ArrayList<>();
         for(Recomment recomment : recomments) {
-            RecommentDto recommentDto = new RecommentDto(recomment.getId(),recomment.getMemberId().getNicName(),recomment.getContent());
+            RecommentDto recommentDto = new RecommentDto(recomment.getId(),recomment.getMemberId().getNicName(),recomment.getContent(),nic);
             recommentDtos.add(recommentDto);
         }
         return recommentDtos;
@@ -40,15 +41,8 @@ public class RecommentService {
         recommentRepository.save(recomment);
     }
 
-    public List<RecommentDto> delete(Long id){
+    public void delete(Long id){
         recommentRepository.deleteById(id);
-        List<Recomment> recomments = recommentRepository.findAll();
-        List<RecommentDto> recommentDtos = new ArrayList<>();
-        for(Recomment recomment : recomments){
-            RecommentDto recommentDto = new RecommentDto(recomment.getId(),recomment.getMemberId().getNicName(),recomment.getContent());
-            recommentDtos.add(recommentDto);
-        }
-        return recommentDtos;
     }
 
     public void deleteParent(Long id){
