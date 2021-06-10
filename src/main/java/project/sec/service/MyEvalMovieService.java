@@ -28,7 +28,6 @@ public class MyEvalMovieService {
         for(EvalList evalList : evalLists){
             movies.add(evalList.getMovie_id());
         }
-        System.out.println(movies.size());
         return movies;
     }
 }

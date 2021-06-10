@@ -41,7 +41,7 @@ public class MovieSearchService {
             String q = "drop table if exists " + id;
             em.createNativeQuery(q).executeUpdate();
         }
-        String sql = "CREATE TEMPORARY TABLE IF NOT EXISTS " + id + " Select * From MOVIE order by rand()";
+        String sql = "CREATE TEMPORARY TABLE IF NOT EXISTS " + id + " Select * From movie order by rand()";
         int i = em.createNativeQuery(sql, Movie.class)
                 .executeUpdate();
 

@@ -25,6 +25,7 @@
         var sequence = 0;
         let score;
         var html = '';
+        var eval_count = 0;
 
         function testajax() {
             var sendData = {"sequence": sequence}
@@ -70,6 +71,7 @@
                 method: 'POST',
                 success: function (resp) {
                     $('#barbar').css('width', resp * 10 + '%');
+                    eval_count  = resp;
                     if (resp >= 10) {
                         $('#submitBTN').attr('disabled', false);
                     }
@@ -83,6 +85,7 @@
             update();
 
             $(document).on("click", ".star1", function () {
+                $('#barbar').css('width', ++eval_count * 10 + '%');
                 let click_movie_id = $(this).attr('id');
                 let sendData = {"movie_id": click_movie_id, "input": score};
                 $.ajax({
@@ -133,7 +136,7 @@
 
 </head>
 <body>
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -154,7 +157,7 @@
             </div>
             <ul class="nav navbar-nav">
                 <form action="/members/changeAuth" method="post">
-                <button type="submit" id="submitBTN" disabled="true" class="btn btn-default btn-sm">평가 완료</button>서비스 이용 전에 재밌게 본 영화 10개 평가 부탁드립니다.
+                    <button type="submit" id="submitBTN" disabled="true" class="btn btn-default btn-sm">평가 완료</button><span style="color: white">서비스 이용 전에 재밌게 본 영화 10개 평가 부탁드립니다.</span>
                 </form>
             </ul>
             <ul class="nav navbar-nav navbar-right">

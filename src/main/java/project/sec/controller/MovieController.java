@@ -104,9 +104,9 @@ public class MovieController {
         return movie;
     }
 
-    @GetMapping("movies_first_eval")
+    @GetMapping("movies/first_eval")
     public String mf() {
-        return "mvoies/first_eval";
+        return "movies/first_eval";
     }
 
     @PostMapping(value = "movies/update_first_eval")

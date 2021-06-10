@@ -74,6 +74,7 @@
                 sequence = 0;
                 html = '';
                 click_genre_id = $(this).attr('id');
+                $('html').scrollTop(0);
                 testajax();
             })
 
@@ -81,7 +82,7 @@
                 var maxHeight = $(document).height();
                 var currentScroll = $(window).scrollTop() + $(window).height();
 
-                if (maxHeight <= currentScroll + 1) {
+                if (maxHeight <= currentScroll) {
                     testajax();
                 }
             })
@@ -89,7 +90,7 @@
     </script>
 </head>
 <body>
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">

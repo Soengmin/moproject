@@ -33,10 +33,10 @@ public class MovieUtil {
      * cron = 초 분 시 일 월 요일 연도
      * 요일 : 0(일요일) ~ 6(토요일)
      */
-/*    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void update_movie() {
         load_movie(true);
-    }*/
+    }
     @Transactional
     public void load_movie(boolean is_scheduled) {
         // true : 당일 날짜 영화 순위만 크롤링, false : 기간 설정
