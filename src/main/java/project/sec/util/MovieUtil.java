@@ -36,6 +36,7 @@ public class MovieUtil {
      * 요일 : 0(일요일) ~ 6(토요일)
      */
     @Scheduled(cron = "0 0 0 * * *")
+    @Transactional
     public void update_movie() {
         newestMovieRepository.delete_all();
         load_movie(true);
