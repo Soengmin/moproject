@@ -12,6 +12,7 @@ import project.sec.controller.MovieForm;
 import project.sec.domain.Genre;
 import project.sec.domain.Movie;
 import project.sec.domain.Movie_Genre;
+import project.sec.repository.NewestMovieRepository;
 import project.sec.service.DictionaryService;
 import project.sec.util.NaverMovieSearch;
 
@@ -26,6 +27,7 @@ public class MovieUtil {
     private final EntityManager em;
     private final NaverMovieSearch nms;
     private final DictionaryService dictionaryService;
+    private final NewestMovieRepository newestMovieRepository;
 
 
     /**
@@ -35,6 +37,7 @@ public class MovieUtil {
      */
     @Scheduled(cron = "0 0 0 * * *")
     public void update_movie() {
+        newestMovieRepository.delete_all();
         load_movie(true);
     }
     @Transactional
@@ -175,7 +178,13 @@ public class MovieUtil {
                     }
 
                     dictionaryService.make_dictionary(movie);
+                    if (is_scheduled) newestMovieRepository.save(movie); // 최신영화 테이블에 저장
                     System.out.println(element.text() + " " + date);
+                } else {
+                    /**
+                     * movie 테이블에 이미 영화가 있는 경우에도 최신영화 테이블엔 영화 저장
+                     */
+                    if (is_scheduled) newestMovieRepository.save(findMovie.get(0));
                 }
             }
 

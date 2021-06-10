@@ -18,6 +18,6 @@ public class StartUp implements ApplicationListener<ContextRefreshedEvent> {
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-//        movieUtil.load_movie(false);
+//        movieUtil.update_movie();
     }
 }

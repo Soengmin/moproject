@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import project.sec.domain.Movie;
+import project.sec.repository.NewestMovieRepository;
 import project.sec.service.RecommendService;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RecommendController {
     private final RecommendService recommendService;
+    private final NewestMovieRepository newestMovieRepository;
 
     @ResponseBody
     @RequestMapping(value = "/movies/recommend", method = RequestMethod.POST)
@@ -28,8 +30,6 @@ public class RecommendController {
     @ResponseBody
     @RequestMapping(value = "/movies/pop", method = RequestMethod.POST)
     public List<Movie> popRecommend(){
-
-        List<Movie> list = recommendService.populorRecommend();
-        return recommendService.populorRecommend();
+        return newestMovieRepository.get_newest_movie();
     }
 }
